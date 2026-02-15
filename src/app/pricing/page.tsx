@@ -39,7 +39,7 @@ export default async function PricingPage() {
   const serviceOptions = options.filter((o) => o.option_type === 'service')
 
   return (
-    <div className="pt-28 pb-16 sm:pt-32 sm:pb-20">
+    <div className="min-h-screen bg-[#fffbf5] pt-28 pb-16 sm:pt-32 sm:pb-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center">

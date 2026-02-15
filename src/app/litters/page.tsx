@@ -34,7 +34,7 @@ export default async function LittersPage() {
   const sold = litters.filter((l) => l.status === 'sold')
 
   return (
-    <div className="pt-28 pb-12 sm:pt-32 sm:pb-16">
+    <div className="min-h-screen bg-[#fffbf5] pt-28 pb-12 sm:pt-32 sm:pb-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center">
