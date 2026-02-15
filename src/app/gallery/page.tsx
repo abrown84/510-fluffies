@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { GalleryGrid } from './gallery-grid'
-import type { Dog, DogImage, Litter, LitterImage, Puppy, PuppyImage } from '@/types/database'
+import type { Dog, DogImage, Litter, LitterImage, Puppy, PuppyImage, LitterWithParents } from '@/types/database'
 
 export const metadata: Metadata = {
   title: 'Gallery',
@@ -10,18 +10,12 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600
 
-interface DogWithImages extends Dog {
-  dog_images: DogImage[]
-}
-
 interface LitterWithImages extends Litter {
-  litter_images: LitterImage[]
   sire: Dog | null
   dam: Dog | null
 }
 
 interface PuppyWithImages extends Puppy {
-  puppy_images: PuppyImage[]
   litter: { sire: Dog | null; dam: Dog | null } | null
 }
 
@@ -38,14 +32,18 @@ async function getGalleryImages(): Promise<GalleryImage[]> {
   const supabase = await createClient()
   const images: GalleryImage[] = []
 
-  // Get dogs with their images
-  const { data: dogs } = await supabase
+  // Get dogs - simple query first, then try to get gallery images separately
+  const { data: dogs, error: dogsError } = await supabase
     .from('dogs')
-    .select('*, dog_images(*)')
+    .select('*')
     .in('status', ['available', 'breeding'])
     .order('name')
 
-  const typedDogs = (dogs as DogWithImages[]) || []
+  if (dogsError) {
+    console.error('Error fetching dogs:', dogsError)
+  }
+
+  const typedDogs = (dogs as Dog[]) || []
 
   for (const dog of typedDogs) {
     // Add cover image
@@ -59,24 +57,51 @@ async function getGalleryImages(): Promise<GalleryImage[]> {
         subtitle: dog.color,
       })
     }
-    // Add gallery images
-    for (const img of dog.dog_images || []) {
-      images.push({
-        id: `dog-${img.id}`,
-        url: img.image_url,
-        alt: img.alt_text || dog.name,
-        category: 'dogs',
-        title: dog.name,
-        subtitle: dog.color,
+    // Add gallery images from gallery_urls array
+    if (dog.gallery_urls && dog.gallery_urls.length > 0) {
+      dog.gallery_urls.forEach((url, index) => {
+        images.push({
+          id: `dog-gallery-${dog.id}-${index}`,
+          url: url,
+          alt: dog.name,
+          category: 'dogs',
+          title: dog.name,
+          subtitle: dog.color,
+        })
       })
     }
   }
 
-  // Get litters with their images
-  const { data: litters } = await supabase
+  // Try to get additional images from dog_images table if it exists
+  const { data: dogImages } = await supabase
+    .from('dog_images')
+    .select('*')
+
+  if (dogImages && dogImages.length > 0) {
+    for (const img of dogImages as DogImage[]) {
+      const dog = typedDogs.find(d => d.id === img.dog_id)
+      if (dog) {
+        images.push({
+          id: `dog-img-${img.id}`,
+          url: img.image_url,
+          alt: img.alt_text || dog.name,
+          category: 'dogs',
+          title: dog.name,
+          subtitle: dog.color,
+        })
+      }
+    }
+  }
+
+  // Get litters with parents
+  const { data: litters, error: littersError } = await supabase
     .from('litters')
-    .select('*, litter_images(*), sire:dogs!litters_sire_id_fkey(*), dam:dogs!litters_dam_id_fkey(*)')
+    .select('*, sire:dogs!litters_sire_id_fkey(*), dam:dogs!litters_dam_id_fkey(*)')
     .order('created_at', { ascending: false })
+
+  if (littersError) {
+    console.error('Error fetching litters:', littersError)
+  }
 
   const typedLitters = (litters as LitterWithImages[]) || []
 
@@ -96,24 +121,41 @@ async function getGalleryImages(): Promise<GalleryImage[]> {
         subtitle: litter.status,
       })
     }
-    // Add gallery images
-    for (const img of litter.litter_images || []) {
-      images.push({
-        id: `litter-${img.id}`,
-        url: img.image_url,
-        alt: img.alt_text || litterName,
-        category: 'litters',
-        title: litterName,
-        subtitle: litter.status,
-      })
+  }
+
+  // Try to get litter images from litter_images table
+  const { data: litterImages } = await supabase
+    .from('litter_images')
+    .select('*')
+
+  if (litterImages && litterImages.length > 0) {
+    for (const img of litterImages as LitterImage[]) {
+      const litter = typedLitters.find(l => l.id === img.litter_id)
+      if (litter) {
+        const litterName = litter.sire && litter.dam
+          ? `${litter.sire.name} × ${litter.dam.name}`
+          : 'Litter'
+        images.push({
+          id: `litter-img-${img.id}`,
+          url: img.image_url,
+          alt: img.alt_text || litterName,
+          category: 'litters',
+          title: litterName,
+          subtitle: litter.status,
+        })
+      }
     }
   }
 
-  // Get puppies with their images
-  const { data: puppies } = await supabase
+  // Get puppies
+  const { data: puppies, error: puppiesError } = await supabase
     .from('puppies')
-    .select('*, puppy_images(*), litter:litters(sire:dogs!litters_sire_id_fkey(*), dam:dogs!litters_dam_id_fkey(*))')
+    .select('*, litter:litters(sire:dogs!litters_sire_id_fkey(*), dam:dogs!litters_dam_id_fkey(*))')
     .order('created_at', { ascending: false })
+
+  if (puppiesError) {
+    console.error('Error fetching puppies:', puppiesError)
+  }
 
   const typedPuppies = (puppies as PuppyWithImages[]) || []
 
@@ -131,16 +173,27 @@ async function getGalleryImages(): Promise<GalleryImage[]> {
         subtitle: puppy.color || puppy.status,
       })
     }
-    // Add gallery images
-    for (const img of puppy.puppy_images || []) {
-      images.push({
-        id: `puppy-${img.id}`,
-        url: img.image_url,
-        alt: img.alt_text || puppyName,
-        category: 'puppies',
-        title: puppyName,
-        subtitle: puppy.color || puppy.status,
-      })
+  }
+
+  // Try to get puppy images from puppy_images table
+  const { data: puppyImages } = await supabase
+    .from('puppy_images')
+    .select('*')
+
+  if (puppyImages && puppyImages.length > 0) {
+    for (const img of puppyImages as PuppyImage[]) {
+      const puppy = typedPuppies.find(p => p.id === img.puppy_id)
+      if (puppy) {
+        const puppyName = puppy.name || puppy.collar_color || 'Puppy'
+        images.push({
+          id: `puppy-img-${img.id}`,
+          url: img.image_url,
+          alt: img.alt_text || puppyName,
+          category: 'puppies',
+          title: puppyName,
+          subtitle: puppy.color || puppy.status,
+        })
+      }
     }
   }
 
