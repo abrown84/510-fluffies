@@ -32,21 +32,46 @@ async function getGalleryImages(): Promise<GalleryImage[]> {
   const supabase = await createClient()
   const images: GalleryImage[] = []
 
-  // Get dogs - simple query first, then try to get gallery images separately
-  const { data: dogs, error: dogsError } = await supabase
-    .from('dogs')
-    .select('*')
-    .in('status', ['available', 'breeding'])
-    .order('name')
-
-  if (dogsError) {
-    console.error('Error fetching dogs:', dogsError)
-  }
+  // Execute all queries in parallel for maximum efficiency
+  const [
+    { data: dogs },
+    { data: litters },
+    { data: puppies },
+    { data: dogImages },
+    { data: litterImages },
+    { data: puppyImages },
+  ] = await Promise.all([
+    // Main entity queries
+    supabase
+      .from('dogs')
+      .select('*')
+      .in('status', ['available', 'breeding'])
+      .order('name'),
+    supabase
+      .from('litters')
+      .select('*, sire:dogs!litters_sire_id_fkey(*), dam:dogs!litters_dam_id_fkey(*)')
+      .order('created_at', { ascending: false }),
+    supabase
+      .from('puppies')
+      .select('*, litter:litters(sire:dogs!litters_sire_id_fkey(*), dam:dogs!litters_dam_id_fkey(*))')
+      .order('created_at', { ascending: false }),
+    // Gallery image queries
+    supabase.from('dog_images').select('*'),
+    supabase.from('litter_images').select('*'),
+    supabase.from('puppy_images').select('*'),
+  ])
 
   const typedDogs = (dogs as Dog[]) || []
+  const typedLitters = (litters as LitterWithImages[]) || []
+  const typedPuppies = (puppies as PuppyWithImages[]) || []
 
+  // Create lookup maps for O(1) access instead of O(n) find()
+  const dogMap = new Map(typedDogs.map(d => [d.id, d]))
+  const litterMap = new Map(typedLitters.map(l => [l.id, l]))
+  const puppyMap = new Map(typedPuppies.map(p => [p.id, p]))
+
+  // Process dogs
   for (const dog of typedDogs) {
-    // Add cover image
     if (dog.image_url) {
       images.push({
         id: `dog-cover-${dog.id}`,
@@ -57,29 +82,24 @@ async function getGalleryImages(): Promise<GalleryImage[]> {
         subtitle: dog.color,
       })
     }
-    // Add gallery images from gallery_urls array
-    if (dog.gallery_urls && dog.gallery_urls.length > 0) {
-      dog.gallery_urls.forEach((url, index) => {
+    if (dog.gallery_urls?.length) {
+      for (let i = 0; i < dog.gallery_urls.length; i++) {
         images.push({
-          id: `dog-gallery-${dog.id}-${index}`,
-          url: url,
+          id: `dog-gallery-${dog.id}-${i}`,
+          url: dog.gallery_urls[i],
           alt: dog.name,
           category: 'dogs',
           title: dog.name,
           subtitle: dog.color,
         })
-      })
+      }
     }
   }
 
-  // Try to get additional images from dog_images table if it exists
-  const { data: dogImages } = await supabase
-    .from('dog_images')
-    .select('*')
-
-  if (dogImages && dogImages.length > 0) {
+  // Process dog gallery images
+  if (dogImages?.length) {
     for (const img of dogImages as DogImage[]) {
-      const dog = typedDogs.find(d => d.id === img.dog_id)
+      const dog = dogMap.get(img.dog_id)
       if (dog) {
         images.push({
           id: `dog-img-${img.id}`,
@@ -93,24 +113,11 @@ async function getGalleryImages(): Promise<GalleryImage[]> {
     }
   }
 
-  // Get litters with parents
-  const { data: litters, error: littersError } = await supabase
-    .from('litters')
-    .select('*, sire:dogs!litters_sire_id_fkey(*), dam:dogs!litters_dam_id_fkey(*)')
-    .order('created_at', { ascending: false })
-
-  if (littersError) {
-    console.error('Error fetching litters:', littersError)
-  }
-
-  const typedLitters = (litters as LitterWithImages[]) || []
-
+  // Process litters
   for (const litter of typedLitters) {
     const litterName = litter.sire && litter.dam
       ? `${litter.sire.name} × ${litter.dam.name}`
       : 'Litter'
-
-    // Add cover image
     if (litter.image_url) {
       images.push({
         id: `litter-cover-${litter.id}`,
@@ -123,14 +130,10 @@ async function getGalleryImages(): Promise<GalleryImage[]> {
     }
   }
 
-  // Try to get litter images from litter_images table
-  const { data: litterImages } = await supabase
-    .from('litter_images')
-    .select('*')
-
-  if (litterImages && litterImages.length > 0) {
+  // Process litter gallery images
+  if (litterImages?.length) {
     for (const img of litterImages as LitterImage[]) {
-      const litter = typedLitters.find(l => l.id === img.litter_id)
+      const litter = litterMap.get(img.litter_id)
       if (litter) {
         const litterName = litter.sire && litter.dam
           ? `${litter.sire.name} × ${litter.dam.name}`
@@ -147,22 +150,9 @@ async function getGalleryImages(): Promise<GalleryImage[]> {
     }
   }
 
-  // Get puppies
-  const { data: puppies, error: puppiesError } = await supabase
-    .from('puppies')
-    .select('*, litter:litters(sire:dogs!litters_sire_id_fkey(*), dam:dogs!litters_dam_id_fkey(*))')
-    .order('created_at', { ascending: false })
-
-  if (puppiesError) {
-    console.error('Error fetching puppies:', puppiesError)
-  }
-
-  const typedPuppies = (puppies as PuppyWithImages[]) || []
-
+  // Process puppies
   for (const puppy of typedPuppies) {
     const puppyName = puppy.name || puppy.collar_color || 'Puppy'
-
-    // Add main image
     if (puppy.image_url) {
       images.push({
         id: `puppy-main-${puppy.id}`,
@@ -175,14 +165,10 @@ async function getGalleryImages(): Promise<GalleryImage[]> {
     }
   }
 
-  // Try to get puppy images from puppy_images table
-  const { data: puppyImages } = await supabase
-    .from('puppy_images')
-    .select('*')
-
-  if (puppyImages && puppyImages.length > 0) {
+  // Process puppy gallery images
+  if (puppyImages?.length) {
     for (const img of puppyImages as PuppyImage[]) {
-      const puppy = typedPuppies.find(p => p.id === img.puppy_id)
+      const puppy = puppyMap.get(img.puppy_id)
       if (puppy) {
         const puppyName = puppy.name || puppy.collar_color || 'Puppy'
         images.push({
