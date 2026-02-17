@@ -111,11 +111,13 @@ export function LitterCard({ litter }: LitterCardProps) {
             </p>
             {litter.sire ? (
               <Link
-                href={`/dogs/${litter.sire.slug}`}
+                href={`/dogs/${litter.sire.id}`}
                 className="font-bold text-neutral-800 hover:text-amber-600 transition-colors"
               >
                 {litter.sire.name}
               </Link>
+            ) : litter.custom_sire_name ? (
+              <span className="font-bold text-neutral-800">{litter.custom_sire_name}</span>
             ) : (
               <span className="text-neutral-400 italic">TBD</span>
             )}
@@ -133,11 +135,13 @@ export function LitterCard({ litter }: LitterCardProps) {
             </p>
             {litter.dam ? (
               <Link
-                href={`/dogs/${litter.dam.slug}`}
+                href={`/dogs/${litter.dam.id}`}
                 className="font-bold text-neutral-800 hover:text-amber-600 transition-colors"
               >
                 {litter.dam.name}
               </Link>
+            ) : litter.custom_dam_name ? (
+              <span className="font-bold text-neutral-800">{litter.custom_dam_name}</span>
             ) : (
               <span className="text-neutral-400 italic">TBD</span>
             )}

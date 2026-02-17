@@ -120,6 +120,8 @@ export interface Database {
           name: string
           sire_id: string | null
           dam_id: string | null
+          custom_sire_name: string | null
+          custom_dam_name: string | null
           status: 'expected' | 'born' | 'available' | 'sold'
           expected_date: string | null
           date_of_birth: string | null
@@ -135,6 +137,8 @@ export interface Database {
           name: string
           sire_id?: string | null
           dam_id?: string | null
+          custom_sire_name?: string | null
+          custom_dam_name?: string | null
           status?: 'expected' | 'born' | 'available' | 'sold'
           expected_date?: string | null
           date_of_birth?: string | null
@@ -150,6 +154,8 @@ export interface Database {
           name?: string
           sire_id?: string | null
           dam_id?: string | null
+          custom_sire_name?: string | null
+          custom_dam_name?: string | null
           status?: 'expected' | 'born' | 'available' | 'sold'
           expected_date?: string | null
           date_of_birth?: string | null

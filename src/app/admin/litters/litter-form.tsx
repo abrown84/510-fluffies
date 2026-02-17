@@ -18,6 +18,8 @@ const litterSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   sire_id: z.string().optional(),
   dam_id: z.string().optional(),
+  custom_sire_name: z.string().optional(),
+  custom_dam_name: z.string().optional(),
   status: z.enum(['expected', 'born', 'available', 'sold']),
   expected_date: z.string().optional(),
   date_of_birth: z.string().optional(),
@@ -58,6 +60,8 @@ export function LitterForm({ litter, males, females }: LitterFormProps) {
       name: litter?.name || '',
       sire_id: litter?.sire_id || '',
       dam_id: litter?.dam_id || '',
+      custom_sire_name: litter?.custom_sire_name || '',
+      custom_dam_name: litter?.custom_dam_name || '',
       status: (litter?.status as LitterFormData['status']) || 'expected',
       expected_date: litter?.expected_date || '',
       date_of_birth: litter?.date_of_birth || '',
@@ -67,6 +71,10 @@ export function LitterForm({ litter, males, females }: LitterFormProps) {
       image_url: litter?.image_url || '',
     },
   })
+
+  // Track if using custom parent names
+  const [useCustomSire, setUseCustomSire] = useState(!!litter?.custom_sire_name)
+  const [useCustomDam, setUseCustomDam] = useState(!!litter?.custom_dam_name)
 
   const imageUrl = watch('image_url')
 
@@ -79,8 +87,10 @@ export function LitterForm({ litter, males, females }: LitterFormProps) {
 
       const litterData = {
         name: data.name,
-        sire_id: data.sire_id || null,
-        dam_id: data.dam_id || null,
+        sire_id: useCustomSire ? null : (data.sire_id || null),
+        dam_id: useCustomDam ? null : (data.dam_id || null),
+        custom_sire_name: useCustomSire ? (data.custom_sire_name || null) : null,
+        custom_dam_name: useCustomDam ? (data.custom_dam_name || null) : null,
         status: data.status,
         expected_date: data.expected_date || null,
         date_of_birth: data.date_of_birth || null,
@@ -138,30 +148,82 @@ export function LitterForm({ litter, males, females }: LitterFormProps) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="block text-sm font-medium text-neutral-700">
-            Sire (Father)
-          </label>
-          <Select {...register('sire_id')} className="mt-1">
-            <option value="">Select sire...</option>
-            {males.map((dog) => (
-              <option key={dog.id} value={dog.id}>
-                {dog.name}
-              </option>
-            ))}
-          </Select>
+          <div className="flex items-center justify-between">
+            <label className="block text-sm font-medium text-neutral-700">
+              Sire (Father)
+            </label>
+            <label className="flex items-center gap-1.5 text-xs text-neutral-500">
+              <input
+                type="checkbox"
+                checked={useCustomSire}
+                onChange={(e) => {
+                  setUseCustomSire(e.target.checked)
+                  if (e.target.checked) {
+                    setValue('sire_id', '')
+                  } else {
+                    setValue('custom_sire_name', '')
+                  }
+                }}
+                className="h-3 w-3 rounded border-neutral-300 text-amber-600"
+              />
+              External
+            </label>
+          </div>
+          {useCustomSire ? (
+            <Input
+              {...register('custom_sire_name')}
+              className="mt-1"
+              placeholder="Enter sire name..."
+            />
+          ) : (
+            <Select {...register('sire_id')} className="mt-1">
+              <option value="">Select sire...</option>
+              {males.map((dog) => (
+                <option key={dog.id} value={dog.id}>
+                  {dog.name}
+                </option>
+              ))}
+            </Select>
+          )}
         </div>
         <div>
-          <label className="block text-sm font-medium text-neutral-700">
-            Dam (Mother)
-          </label>
-          <Select {...register('dam_id')} className="mt-1">
-            <option value="">Select dam...</option>
-            {females.map((dog) => (
-              <option key={dog.id} value={dog.id}>
-                {dog.name}
-              </option>
-            ))}
-          </Select>
+          <div className="flex items-center justify-between">
+            <label className="block text-sm font-medium text-neutral-700">
+              Dam (Mother)
+            </label>
+            <label className="flex items-center gap-1.5 text-xs text-neutral-500">
+              <input
+                type="checkbox"
+                checked={useCustomDam}
+                onChange={(e) => {
+                  setUseCustomDam(e.target.checked)
+                  if (e.target.checked) {
+                    setValue('dam_id', '')
+                  } else {
+                    setValue('custom_dam_name', '')
+                  }
+                }}
+                className="h-3 w-3 rounded border-neutral-300 text-amber-600"
+              />
+              External
+            </label>
+          </div>
+          {useCustomDam ? (
+            <Input
+              {...register('custom_dam_name')}
+              className="mt-1"
+              placeholder="Enter dam name..."
+            />
+          ) : (
+            <Select {...register('dam_id')} className="mt-1">
+              <option value="">Select dam...</option>
+              {females.map((dog) => (
+                <option key={dog.id} value={dog.id}>
+                  {dog.name}
+                </option>
+              ))}
+            </Select>
+          )}
         </div>
       </div>
 
