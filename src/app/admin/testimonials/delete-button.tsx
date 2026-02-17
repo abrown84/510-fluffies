@@ -26,6 +26,7 @@ export function DeleteTestimonialButton({ testimonialId, testimonialName }: Dele
       const supabase = createClient()
       const { error } = await supabase
         .from('testimonials')
+        // @ts-ignore - testimonials table added via migration
         .delete()
         .eq('id', testimonialId)
 

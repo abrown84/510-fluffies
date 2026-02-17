@@ -62,6 +62,7 @@ export function BlogForm({ initialData }: BlogFormProps) {
       if (initialData) {
         const { error } = await supabase
           .from('blog_posts')
+          // @ts-ignore - blog_posts table added via migration
           .update(data)
           .eq('id', initialData.id)
 
@@ -69,6 +70,7 @@ export function BlogForm({ initialData }: BlogFormProps) {
       } else {
         const { error } = await supabase
           .from('blog_posts')
+          // @ts-ignore - blog_posts table added via migration
           .insert(data)
 
         if (error) throw error

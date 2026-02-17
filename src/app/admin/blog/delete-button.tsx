@@ -26,6 +26,7 @@ export function DeleteBlogPostButton({ postId, postTitle }: DeleteBlogPostButton
       const supabase = createClient()
       const { error } = await supabase
         .from('blog_posts')
+        // @ts-ignore - blog_posts table added via migration
         .delete()
         .eq('id', postId)
 

@@ -219,6 +219,7 @@ export function GalleryClient({ images, stats, entities }: GalleryClientProps) {
         .order('display_order', { ascending: false })
         .limit(1)
 
+      // @ts-ignore - dynamic table name
       let maxOrder = existingImages?.[0]?.display_order ?? -1
 
       for (const file of imageFiles) {

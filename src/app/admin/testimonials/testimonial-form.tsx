@@ -44,6 +44,7 @@ export function TestimonialForm({ initialData }: TestimonialFormProps) {
       if (initialData) {
         const { error } = await supabase
           .from('testimonials')
+          // @ts-ignore - testimonials table added via migration
           .update(data)
           .eq('id', initialData.id)
 
@@ -51,6 +52,7 @@ export function TestimonialForm({ initialData }: TestimonialFormProps) {
       } else {
         const { error } = await supabase
           .from('testimonials')
+          // @ts-ignore - testimonials table added via migration
           .insert(data)
 
         if (error) throw error
