@@ -21,19 +21,36 @@ interface DogWithRelations extends Dog {
   health_tests: HealthTest[]
 }
 
-async function getDog(slug: string): Promise<DogWithRelations | null> {
+async function getDog(slugOrId: string): Promise<DogWithRelations | null> {
   const supabase = await createClient()
-  const { data } = await supabase
+
+  // Try to find by slug first
+  const { data: bySlug } = await supabase
     .from('dogs')
     .select(`
       *,
       dog_images(*),
       health_tests(*)
     `)
-    .eq('slug', slug)
+    .eq('slug', slugOrId)
     .in('status', ['available', 'breeding'])
     .single()
-  return data as DogWithRelations | null
+
+  if (bySlug) return bySlug as DogWithRelations
+
+  // Fall back to finding by ID (for dogs without slugs)
+  const { data: byId } = await supabase
+    .from('dogs')
+    .select(`
+      *,
+      dog_images(*),
+      health_tests(*)
+    `)
+    .eq('id', slugOrId)
+    .in('status', ['available', 'breeding'])
+    .single()
+
+  return byId as DogWithRelations | null
 }
 
 export async function generateMetadata({ params }: DogPageProps): Promise<Metadata> {
