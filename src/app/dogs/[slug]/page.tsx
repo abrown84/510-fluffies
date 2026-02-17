@@ -24,6 +24,9 @@ interface DogWithRelations extends Dog {
 async function getDog(slugOrId: string): Promise<DogWithRelations | null> {
   const supabase = await createClient()
 
+  // Decode URL-encoded characters
+  const decoded = decodeURIComponent(slugOrId)
+
   // Try to find by slug first
   const { data: bySlug } = await supabase
     .from('dogs')
@@ -32,11 +35,41 @@ async function getDog(slugOrId: string): Promise<DogWithRelations | null> {
       dog_images(*),
       health_tests(*)
     `)
-    .eq('slug', slugOrId)
+    .eq('slug', decoded)
     .in('status', ['available', 'breeding'])
     .single()
 
   if (bySlug) return bySlug as DogWithRelations
+
+  // Try with the original (not decoded) value
+  if (decoded !== slugOrId) {
+    const { data: bySlugOriginal } = await supabase
+      .from('dogs')
+      .select(`
+        *,
+        dog_images(*),
+        health_tests(*)
+      `)
+      .eq('slug', slugOrId)
+      .in('status', ['available', 'breeding'])
+      .single()
+
+    if (bySlugOriginal) return bySlugOriginal as DogWithRelations
+  }
+
+  // Try to find by name (for dogs where slug = name)
+  const { data: byName } = await supabase
+    .from('dogs')
+    .select(`
+      *,
+      dog_images(*),
+      health_tests(*)
+    `)
+    .eq('name', decoded)
+    .in('status', ['available', 'breeding'])
+    .single()
+
+  if (byName) return byName as DogWithRelations
 
   // Fall back to finding by ID (for dogs without slugs)
   const { data: byId } = await supabase

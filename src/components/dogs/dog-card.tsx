@@ -16,7 +16,7 @@ export function DogCard({ dog }: DogCardProps) {
   const [isHovered, setIsHovered] = useState(false)
 
   return (
-    <Link href={`/dogs/${dog.slug || dog.id}`}>
+    <Link href={`/dogs/${dog.id}`}>
       <article
         className="luxury-card group relative overflow-hidden rounded-sm"
         onMouseEnter={() => setIsHovered(true)}
