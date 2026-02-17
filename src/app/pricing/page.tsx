@@ -39,24 +39,38 @@ export default async function PricingPage() {
   const serviceOptions = options.filter((o) => o.option_type === 'service')
 
   return (
-    <div className="min-h-screen bg-[#fffbf5] pt-28 pb-16 sm:pt-32 sm:pb-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center">
-          <div className="inline-flex items-center gap-2 rounded-none border border-[#c9a227]/30 bg-[#c9a227]/5 px-4 py-2 mb-6">
-            <Crown weight="duotone" className="h-4 w-4 text-[#c9a227]" />
-            <span className="font-body text-xs font-medium uppercase tracking-wider text-[#c9a227]">
-              Investment Options
-            </span>
+    <div className="min-h-screen bg-[#fffbf5]">
+      {/* Hero with Bay Area Background */}
+      <div className="relative pt-28 pb-16 sm:pt-32 sm:pb-20">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/photos/golden-gate-fog.jpg)' }}
+        />
+        {/* Overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1a1612]/80 via-[#1a1612]/70 to-[#fffbf5]" />
+
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 rounded-none border border-[#c9a227]/30 bg-[#c9a227]/10 px-4 py-2 mb-6">
+              <Crown weight="duotone" className="h-4 w-4 text-[#c9a227]" />
+              <span className="font-body text-xs font-medium uppercase tracking-wider text-[#c9a227]">
+                Investment Options
+              </span>
+            </div>
+            <h1 className="font-display text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Ownership <span className="text-gold-gradient">Options</span>
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl font-body text-lg text-neutral-200 leading-relaxed">
+              We offer flexible ownership arrangements to match your lifestyle and goals.
+              Each option includes our commitment to health, quality, and lifetime support.
+            </p>
           </div>
-          <h1 className="font-display text-4xl font-semibold tracking-tight text-[#1a1612] sm:text-5xl lg:text-6xl">
-            Ownership <span className="text-gold-gradient">Options</span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl font-body text-lg text-neutral-600 leading-relaxed">
-            We offer flexible ownership arrangements to match your lifestyle and goals.
-            Each option includes our commitment to health, quality, and lifetime support.
-          </p>
         </div>
+      </div>
+
+      <div className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
 
         {/* Pricing Cards */}
         {ownershipOptions.length > 0 && (
