@@ -57,7 +57,7 @@ export async function generateMetadata({ params }: LitterPageProps): Promise<Met
     title: litter.name,
     description: litter.description || `${litter.name} litter${parentNames ? ` from ${parentNames}` : ''}. Premium Fluffy French Bulldog puppies.`,
     openGraph: {
-      title: `${litter.name} | 510 Fluffies`,
+      title: `${litter.name} | C.D. Certified Frenchies`,
       description: litter.description || `View our ${litter.name} litter of Fluffy French Bulldogs.`,
       images: litter.image_url ? [litter.image_url] : [],
     },

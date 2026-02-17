@@ -4,28 +4,28 @@ import { SettingsForm } from './settings-form'
 // Default settings if database is empty
 const defaultSettings = {
   site_info: {
-    name: '510 Fluffies',
+    name: 'C.D. Certified Frenchies',
     tagline: 'Premium Fluffy French Bulldogs',
     description: "Bay Area's premier breeder of exceptional Fluffy French Bulldogs.",
-    email: 'hello@510fluffies.com',
+    email: 'hello@cdcertifiedfrenchies.com',
     phone: '',
     location: 'Bay Area, California',
   },
   social_links: {
-    instagram: '@510.fluffies',
+    instagram: '@cd.certifiedfrenchies',
     facebook: '',
     tiktok: '',
     youtube: '',
   },
   seo: {
-    meta_title: '510 Fluffies | Premium Fluffy French Bulldogs',
+    meta_title: 'C.D. Certified Frenchies | Premium Fluffy French Bulldogs',
     meta_description: "Bay Area's premier breeder of exceptional Fluffy French Bulldogs.",
     og_image: '',
   },
   notifications: {
     email_new_applications: true,
     email_new_messages: true,
-    notification_email: 'hello@510fluffies.com',
+    notification_email: 'hello@cdcertifiedfrenchies.com',
   },
   waitlist: {
     enabled: true,

@@ -24,8 +24,8 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   title: {
-    default: '510 Fluffies | Premium Fluffy French Bulldogs',
-    template: '%s | 510 Fluffies',
+    default: 'C.D. Certified Frenchies | Premium Fluffy French Bulldogs',
+    template: '%s | C.D. Certified Frenchies',
   },
   description:
     'Premium Fluffy French Bulldogs bred with love in the Bay Area. Quality bloodlines, health-tested parents, and exceptional temperaments.',
@@ -36,15 +36,15 @@ export const metadata: Metadata = {
     'Fluffy Frenchie',
     'French Bulldog puppies',
     'California French Bulldog breeder',
-    '510 Fluffies',
+    'C.D. Certified Frenchies',
   ],
-  authors: [{ name: '510 Fluffies' }],
+  authors: [{ name: 'C.D. Certified Frenchies' }],
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: '/',
-    siteName: '510 Fluffies',
-    title: '510 Fluffies | Premium Fluffy French Bulldogs',
+    siteName: 'C.D. Certified Frenchies',
+    title: 'C.D. Certified Frenchies | Premium Fluffy French Bulldogs',
     description:
       'Premium Fluffy French Bulldogs bred with love in the Bay Area. Quality bloodlines, health-tested parents, and exceptional temperaments.',
     images: [
@@ -52,13 +52,13 @@ export const metadata: Metadata = {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: '510 Fluffies - Premium Fluffy French Bulldogs',
+        alt: 'C.D. Certified Frenchies - Premium Fluffy French Bulldogs',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '510 Fluffies | Premium Fluffy French Bulldogs',
+    title: 'C.D. Certified Frenchies | Premium Fluffy French Bulldogs',
     description:
       'Premium Fluffy French Bulldogs bred with love in the Bay Area.',
     images: ['/og-image.jpg'],

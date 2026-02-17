@@ -6,7 +6,7 @@ import { ApplicationForm } from './application-form'
 export const metadata: Metadata = {
   title: 'Apply for a Puppy',
   description:
-    'Submit your application for a Fluffy French Bulldog puppy from 510 Fluffies. Start your journey to bringing home your perfect companion.',
+    'Submit your application for a Fluffy French Bulldog puppy from C.D. Certified Frenchies. Start your journey to bringing home your perfect companion.',
 }
 
 const steps = [
@@ -49,13 +49,13 @@ export default function ApplyPage() {
           {/* Header */}
           <div className="text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c9a227]">
-              510 Fluffies
+              C.D. Certified Frenchies
             </p>
             <h1 className="mt-3 text-4xl font-bold tracking-tight text-white sm:text-5xl">
               Puppy Application
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-neutral-200">
-              Thank you for your interest in a 510 Fluffies puppy! Please complete the
+              Thank you for your interest in a C.D. Certified Frenchies puppy! Please complete the
               application below so we can learn more about you and your home.
             </p>
           </div>

@@ -58,7 +58,7 @@ export function AdminSidebar({ userEmail }: AdminSidebarProps) {
           {/* Logo */}
           <div className="flex h-16 items-center border-b border-neutral-200 px-6">
             <Link href="/admin" className="text-xl font-bold" onClick={() => setIsOpen(false)}>
-              510<span className="text-amber-600">.</span>Fluffies
+              C.D.<span className="text-amber-600"> Certified</span> Frenchies
             </Link>
           </div>
 

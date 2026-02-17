@@ -36,10 +36,10 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   return {
     title: post.title,
-    description: post.excerpt || `Read "${post.title}" on the 510 Fluffies blog.`,
+    description: post.excerpt || `Read "${post.title}" on the C.D. Certified Frenchies blog.`,
     openGraph: {
-      title: `${post.title} | 510 Fluffies Blog`,
-      description: post.excerpt || `Read "${post.title}" on the 510 Fluffies blog.`,
+      title: `${post.title} | C.D. Certified Frenchies Blog`,
+      description: post.excerpt || `Read "${post.title}" on the C.D. Certified Frenchies blog.`,
       images: post.featured_image_url ? [post.featured_image_url] : [],
       type: 'article',
       publishedTime: post.published_at || undefined,
@@ -109,7 +109,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         {/* CTA */}
         <div className="mt-12 rounded-lg bg-amber-50 p-6 text-center">
           <h3 className="text-lg font-semibold text-neutral-900">
-            Interested in a 510 Fluffies puppy?
+            Interested in a C.D. Certified Frenchies puppy?
           </h3>
           <p className="mt-2 text-neutral-600">
             Start your application today and join our family.

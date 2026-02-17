@@ -136,7 +136,7 @@ export default function HealthStandardsPage() {
               </h2>
               <div className="mt-4 space-y-4 text-neutral-700">
                 <p>
-                  Every puppy from 510 Fluffies comes with a comprehensive two-year
+                  Every puppy from C.D. Certified Frenchies comes with a comprehensive two-year
                   genetic health guarantee. This covers any hereditary or congenital
                   conditions that may arise.
                 </p>

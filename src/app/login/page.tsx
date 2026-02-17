@@ -34,7 +34,7 @@ export default async function LoginPage({
             Admin Login
           </h1>
           <p className="mt-2 text-neutral-600">
-            Sign in to manage your 510 Fluffies website
+            Sign in to manage your C.D. Certified Frenchies website
           </p>
         </div>
         <div className="mt-8">

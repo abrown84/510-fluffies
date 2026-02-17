@@ -163,7 +163,7 @@ export default async function HomePage() {
               Our Promise
             </span>
             <h2 className="mt-4 font-display text-4xl font-medium tracking-tight text-[#1a1612] sm:text-5xl">
-              The 510 Fluffies Difference
+              The C.D. Difference
             </h2>
             <div className="mx-auto mt-6 h-px w-24 bg-gradient-to-r from-transparent via-[#c9a227] to-transparent" />
           </div>
@@ -339,14 +339,14 @@ export default async function HomePage() {
 
             <div className="mt-10">
               <a
-                href="https://www.instagram.com/510.fluffies/"
+                href="https://www.instagram.com/cd.certifiedfrenchies/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <button className="luxury-button group rounded-none px-10 py-4">
                   <span className="flex items-center gap-3">
                     <InstagramLogo weight="bold" className="h-5 w-5" />
-                    @510.fluffies
+                    @cd.certifiedfrenchies
                     <ArrowRight weight="bold" className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </span>
                 </button>

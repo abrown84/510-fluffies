@@ -50,9 +50,9 @@ export function Navigation() {
             'font-display text-2xl font-medium tracking-tight transition-colors',
             scrolled || !isHomepage ? 'text-[#1a1612]' : 'text-white'
           )}>
-            510
-            <span className="text-[#c9a227]">.</span>
-            Fluffies
+            C.D.
+            <span className="text-[#c9a227]"> Certified</span>
+            {' '}Frenchies
           </span>
         </Link>
 
@@ -79,7 +79,7 @@ export function Navigation() {
         {/* Desktop CTA */}
         <div className="hidden items-center gap-6 lg:flex">
           <a
-            href="https://www.instagram.com/510.fluffies/"
+            href="https://www.instagram.com/cd.certifiedfrenchies/"
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
@@ -156,13 +156,13 @@ export function Navigation() {
             </Link>
 
             <a
-              href="https://www.instagram.com/510.fluffies/"
+              href="https://www.instagram.com/cd.certifiedfrenchies/"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 flex items-center justify-center gap-2 py-3 font-body text-sm text-[#1a1612]/60 hover:text-[#c9a227] transition-colors"
             >
               <InstagramLogo weight="fill" className="h-5 w-5" />
-              @510.fluffies
+              @cd.certifiedfrenchies
             </a>
           </div>
         </div>

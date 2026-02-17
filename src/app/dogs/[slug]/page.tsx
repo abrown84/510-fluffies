@@ -106,7 +106,7 @@ export async function generateMetadata({ params }: DogPageProps): Promise<Metada
     title: dog.name,
     description: dog.bio || `Meet ${dog.name}, our ${dog.color} Fluffy French Bulldog.`,
     openGraph: {
-      title: `${dog.name} | 510 Fluffies`,
+      title: `${dog.name} | C.D. Certified Frenchies`,
       description: dog.bio || `Meet ${dog.name}, our ${dog.color} Fluffy French Bulldog.`,
       images: dog.image_url ? [dog.image_url] : [],
     },

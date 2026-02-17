@@ -4,7 +4,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 
 // Use Resend's test sender until you verify your domain at resend.com/domains
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev'
-const BREEDER_EMAIL = process.env.BREEDER_EMAIL || 'hello@510fluffies.com'
+const BREEDER_EMAIL = process.env.BREEDER_EMAIL || 'hello@cdcertifiedfrenchies.com'
 
 export type ApplicationStatus = 'pending' | 'reviewing' | 'approved' | 'waitlisted' | 'declined'
 
@@ -18,7 +18,7 @@ interface StatusEmailContent {
 
 const statusEmailContent: Record<ApplicationStatus, StatusEmailContent> = {
   pending: {
-    subject: "Application Received - 510 Fluffies",
+    subject: "Application Received - C.D. Certified Frenchies",
     heading: "We've Received Your Application!",
     message: "Thank you for your interest in our Fluffy French Bulldogs. We've received your application and will review it shortly.",
     showNextSteps: true,
@@ -29,7 +29,7 @@ const statusEmailContent: Record<ApplicationStatus, StatusEmailContent> = {
     ]
   },
   reviewing: {
-    subject: "Application Under Review - 510 Fluffies",
+    subject: "Application Under Review - C.D. Certified Frenchies",
     heading: "Your Application is Being Reviewed",
     message: "Great news! We're currently reviewing your application for one of our Fluffy French Bulldogs. We'll be in touch soon with an update.",
     showNextSteps: true,
@@ -40,8 +40,8 @@ const statusEmailContent: Record<ApplicationStatus, StatusEmailContent> = {
     ]
   },
   approved: {
-    subject: "🎉 Congratulations! Application Approved - 510 Fluffies",
-    heading: "Welcome to the 510 Fluffies Family!",
+    subject: "🎉 Congratulations! Application Approved - C.D. Certified Frenchies",
+    heading: "Welcome to the C.D. Certified Frenchies Family!",
     message: "We're thrilled to let you know that your application has been approved! We believe you'll provide a wonderful home for one of our puppies.",
     showNextSteps: true,
     nextSteps: [
@@ -52,7 +52,7 @@ const statusEmailContent: Record<ApplicationStatus, StatusEmailContent> = {
     ]
   },
   waitlisted: {
-    subject: "You're on Our Waitlist - 510 Fluffies",
+    subject: "You're on Our Waitlist - C.D. Certified Frenchies",
     heading: "You've Been Added to Our Waitlist",
     message: "Thank you for your patience! While we don't have a puppy available right now that matches your criteria, we've added you to our waitlist. We'll contact you as soon as we have puppies that fit your preferences.",
     showNextSteps: true,
@@ -63,9 +63,9 @@ const statusEmailContent: Record<ApplicationStatus, StatusEmailContent> = {
     ]
   },
   declined: {
-    subject: "Application Update - 510 Fluffies",
+    subject: "Application Update - C.D. Certified Frenchies",
     heading: "Application Update",
-    message: "Thank you for your interest in 510 Fluffies. After careful consideration, we've decided not to move forward with your application at this time. We wish you the best in finding your perfect companion.",
+    message: "Thank you for your interest in C.D. Certified Frenchies. After careful consideration, we've decided not to move forward with your application at this time. We wish you the best in finding your perfect companion.",
     showNextSteps: false
   }
 }
@@ -125,7 +125,7 @@ function generateEmailHtml(name: string, content: StatusEmailContent): string {
         <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
           <!-- Header -->
           <div style="text-align: center; margin-bottom: 32px;">
-            <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #1a1a1a;">510 Fluffies</h1>
+            <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #1a1a1a;">C.D. Certified Frenchies</h1>
             <p style="margin: 4px 0 0 0; color: #8b7355; font-size: 14px;">Premium Fluffy French Bulldogs</p>
           </div>
 
@@ -151,10 +151,10 @@ function generateEmailHtml(name: string, content: StatusEmailContent): string {
               <a href="mailto:${BREEDER_EMAIL}" style="color: #8b7355;">${BREEDER_EMAIL}</a>
             </p>
             <p style="margin: 0;">
-              <a href="https://510fluffies.vercel.app" style="color: #8b7355;">510fluffies.vercel.app</a>
+              <a href="https://cdcertifiedfrenchies.com" style="color: #8b7355;">cdcertifiedfrenchies.com</a>
             </p>
             <p style="margin: 16px 0 0 0; font-size: 12px;">
-              © ${new Date().getFullYear()} 510 Fluffies. All rights reserved.
+              © ${new Date().getFullYear()} C.D. Certified Frenchies. All rights reserved.
             </p>
           </div>
         </div>

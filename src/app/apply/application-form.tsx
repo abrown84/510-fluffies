@@ -86,13 +86,13 @@ export function ApplicationForm() {
           Application Submitted!
         </h2>
         <p className="mt-4 max-w-md text-neutral-600">
-          Thank you for your interest in a 510 Fluffies puppy. We will review your
+          Thank you for your interest in a C.D. Certified Frenchies puppy. We will review your
           application and get back to you within 48 hours.
         </p>
         <p className="mt-4 text-sm text-neutral-500">
           In the meantime, follow us on{' '}
           <a
-            href="https://www.instagram.com/510.fluffies/"
+            href="https://www.instagram.com/cd.certifiedfrenchies/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-amber-600 hover:underline"

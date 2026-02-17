@@ -76,7 +76,7 @@ export function WaitlistForm() {
         <p className="mt-4 text-sm text-neutral-500">
           Follow us on{' '}
           <a
-            href="https://www.instagram.com/510.fluffies/"
+            href="https://www.instagram.com/cd.certifiedfrenchies/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-amber-600 hover:underline"

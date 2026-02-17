@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: PuppiesPageProps): Promise<Me
     title: `${litter.name} Puppies`,
     description: `Meet the puppies from our ${litter.name} litter. Premium Fluffy French Bulldog puppies with health guarantees.`,
     openGraph: {
-      title: `${litter.name} Puppies | 510 Fluffies`,
+      title: `${litter.name} Puppies | C.D. Certified Frenchies`,
       description: `View available puppies from our ${litter.name} litter.`,
       images: litter.image_url ? [litter.image_url] : [],
     },

@@ -8,7 +8,7 @@ import type { BlogPost } from '@/types/database'
 export const metadata: Metadata = {
   title: 'Blog',
   description:
-    'News, tips, and stories from 510 Fluffies. Stay up to date with our breeding program and learn about Fluffy French Bulldog care.',
+    'News, tips, and stories from C.D. Certified Frenchies. Stay up to date with our breeding program and learn about Fluffy French Bulldog care.',
 }
 
 export const revalidate = 3600
@@ -50,7 +50,7 @@ export default async function BlogPage() {
               Our Blog
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-neutral-200">
-              News, tips, and stories from 510 Fluffies. Stay up to date with our
+              News, tips, and stories from C.D. Certified Frenchies. Stay up to date with our
               breeding program and learn about Fluffy French Bulldog care.
             </p>
           </div>
@@ -104,7 +104,7 @@ export default async function BlogPage() {
             Follow us for more updates and adorable puppy content!
           </p>
           <a
-            href="https://www.instagram.com/510.fluffies/"
+            href="https://www.instagram.com/cd.certifiedfrenchies/"
             target="_blank"
             rel="noopener noreferrer"
           >

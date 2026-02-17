@@ -7,7 +7,7 @@ import { WaitlistForm } from './waitlist-form'
 export const metadata: Metadata = {
   title: 'Join Our Waitlist',
   description:
-    'Join the 510 Fluffies waitlist to be notified when puppies become available. Be first in line for your perfect Fluffy French Bulldog companion.',
+    'Join the C.D. Certified Frenchies waitlist to be notified when puppies become available. Be first in line for your perfect Fluffy French Bulldog companion.',
 }
 
 const benefits = [

@@ -10,7 +10,7 @@ export function Footer() {
           <div className="md:col-span-2">
             <Link href="/" className="inline-block">
               <span className="text-2xl font-bold tracking-tight text-neutral-900">
-                510<span className="text-amber-600">.</span>Fluffies
+                C.D.<span className="text-amber-600"> Certified</span> Frenchies
               </span>
             </Link>
             <p className="mt-4 max-w-md text-sm text-neutral-600">
@@ -20,7 +20,7 @@ export function Footer() {
             </p>
             <div className="mt-6 flex gap-4">
               <a
-                href="https://www.instagram.com/510.fluffies/"
+                href="https://www.instagram.com/cd.certifiedfrenchies/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900 text-white transition-colors hover:bg-amber-600"
@@ -107,22 +107,22 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="mailto:hello@510fluffies.com"
+                  href="mailto:hello@cdcertifiedfrenchies.com"
                   className="flex items-center gap-2 text-sm text-neutral-600 hover:text-amber-600"
                 >
                   <Mail className="h-4 w-4" />
-                  <span>hello@510fluffies.com</span>
+                  <span>hello@cdcertifiedfrenchies.com</span>
                 </a>
               </li>
               <li>
                 <a
-                  href="https://www.instagram.com/510.fluffies/"
+                  href="https://www.instagram.com/cd.certifiedfrenchies/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-sm text-neutral-600 hover:text-amber-600"
                 >
                   <Instagram className="h-4 w-4" />
-                  <span>@510.fluffies</span>
+                  <span>@cd.certifiedfrenchies</span>
                 </a>
               </li>
             </ul>
@@ -132,7 +132,7 @@ export function Footer() {
         <div className="mt-12 border-t border-neutral-200 pt-8">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-sm text-neutral-500">
-              &copy; {new Date().getFullYear()} 510 Fluffies. All rights reserved.
+              &copy; {new Date().getFullYear()} C.D. Certified Frenchies. All rights reserved.
             </p>
             <Link
               href="/login"

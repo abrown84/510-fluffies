@@ -8,7 +8,7 @@ import type { Testimonial } from '@/types/database'
 export const metadata: Metadata = {
   title: 'Testimonials',
   description:
-    'Read what our puppy families have to say about their 510 Fluffies experience. Real stories from real families.',
+    'Read what our puppy families have to say about their C.D. Certified Frenchies experience. Real stories from real families.',
 }
 
 export const revalidate = 3600
@@ -52,7 +52,7 @@ export default async function TestimonialsPage() {
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-neutral-200">
               Don&apos;t just take our word for it. Hear from families who have
-              welcomed a 510 Fluffies puppy into their homes.
+              welcomed a C.D. Certified Frenchies puppy into their homes.
             </p>
           </div>
         </div>
@@ -109,7 +109,7 @@ export default async function TestimonialsPage() {
         {/* CTA */}
         <div className="mt-16 text-center">
           <p className="text-neutral-600 mb-4">
-            Ready to start your own 510 Fluffies story?
+            Ready to start your own C.D. Certified Frenchies story?
           </p>
           <Link href="/apply">
             <Button variant="primary" size="lg">

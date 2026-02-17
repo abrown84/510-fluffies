@@ -8,7 +8,7 @@ import { ContactForm } from './contact-form'
 export const metadata: Metadata = {
   title: 'Contact',
   description:
-    'Get in touch with 510 Fluffies. Questions about our Fluffy French Bulldogs or the application process? We would love to hear from you.',
+    'Get in touch with C.D. Certified Frenchies. Questions about our Fluffy French Bulldogs or the application process? We would love to hear from you.',
 }
 
 export default function ContactPage() {
@@ -58,12 +58,12 @@ export default function ContactPage() {
                       Best way to reach us and see daily updates
                     </p>
                     <a
-                      href="https://www.instagram.com/510.fluffies/"
+                      href="https://www.instagram.com/cd.certifiedfrenchies/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mt-2 inline-flex items-center text-amber-600 hover:text-amber-700"
                     >
-                      @510.fluffies
+                      @cd.certifiedfrenchies
                     </a>
                   </div>
                 </div>
@@ -82,10 +82,10 @@ export default function ContactPage() {
                       For detailed inquiries
                     </p>
                     <a
-                      href="mailto:hello@510fluffies.com"
+                      href="mailto:hello@cdcertifiedfrenchies.com"
                       className="mt-2 inline-flex items-center text-amber-600 hover:text-amber-700"
                     >
-                      hello@510fluffies.com
+                      hello@cdcertifiedfrenchies.com
                     </a>
                   </div>
                 </div>
