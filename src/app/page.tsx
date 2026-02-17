@@ -84,16 +84,16 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Hero Section - Luxury Dark */}
-      <section className="relative min-h-[90vh] overflow-hidden bg-[#1a1612]">
-        {/* Decorative overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1a1612] via-[#2d2926]/95 to-[#1a1612]/90" />
+      {/* Hero Section - Bay Area */}
+      <section className="relative min-h-[90vh] overflow-hidden">
+        {/* Bay Area Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/photos/bay-bridge-skyline.jpg)' }}
+        />
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1a1612]/70 via-[#1a1612]/60 to-[#1a1612]/80" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(201,162,39,0.1)_0%,_transparent_60%)]" />
-
-        {/* Subtle pattern overlay */}
-        <div className="absolute inset-0 opacity-[0.02]" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a227' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-        }} />
 
         <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:grid lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-36">
           {/* Text Content */}
@@ -313,8 +313,13 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Instagram Section - Elegant Dark */}
+      {/* Instagram Section - Elegant Dark with Bay Area backdrop */}
       <section className="relative overflow-hidden bg-[#1a1612] py-24 sm:py-32">
+        {/* Bay Area Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
+          style={{ backgroundImage: 'url(/photos/bay-bridge-tower.jpg)' }}
+        />
         {/* Decorative elements */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(201,162,39,0.08)_0%,_transparent_70%)]" />
 
@@ -351,10 +356,15 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section - Premium */}
+      {/* CTA Section - Premium with Bay Area backdrop */}
       <section className="premium-section relative py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="relative overflow-hidden rounded-sm bg-gradient-to-br from-[#2d2926] via-[#1a1612] to-[#2d2926] px-8 py-20 sm:px-16 sm:py-28">
+            {/* Bay Area Background Image */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-15"
+              style={{ backgroundImage: 'url(/photos/yerba-buena-aerial.jpg)' }}
+            />
             {/* Decorative corners */}
             <div className="absolute top-6 left-6 h-16 w-16 border-l-2 border-t-2 border-[#c9a227]/40" />
             <div className="absolute top-6 right-6 h-16 w-16 border-r-2 border-t-2 border-[#c9a227]/40" />

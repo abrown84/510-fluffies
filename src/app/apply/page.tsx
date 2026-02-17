@@ -34,18 +34,35 @@ const steps = [
 
 export default function ApplyPage() {
   return (
-    <div className="pt-28 pb-12 sm:pt-32 sm:pb-16">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl">
-            Puppy Application
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-neutral-600">
-            Thank you for your interest in a 510 Fluffies puppy! Please complete the
-            application below so we can learn more about you and your home.
-          </p>
+    <div className="min-h-screen bg-[#fffbf5]">
+      {/* Hero with Bay Area Background */}
+      <div className="relative pt-28 pb-16 sm:pt-32 sm:pb-20">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/photos/bay-bridge-road.jpg)' }}
+        />
+        {/* Overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1a1612]/80 via-[#1a1612]/70 to-[#fffbf5]" />
+
+        <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c9a227]">
+              510 Fluffies
+            </p>
+            <h1 className="mt-3 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              Puppy Application
+            </h1>
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-neutral-200">
+              Thank you for your interest in a 510 Fluffies puppy! Please complete the
+              application below so we can learn more about you and your home.
+            </p>
+          </div>
         </div>
+      </div>
+
+      <div className="mx-auto max-w-4xl px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8">
 
         {/* Process Steps */}
         <div className="mt-12">
