@@ -27,63 +27,55 @@ async function getDog(slugOrId: string): Promise<DogWithRelations | null> {
   // Decode URL-encoded characters
   const decoded = decodeURIComponent(slugOrId)
 
+  // Query without health_tests join (relationship not set up in DB)
+  const selectQuery = `
+    *,
+    dog_images(*)
+  `
+
   // Try to find by slug first
   const { data: bySlug } = await supabase
     .from('dogs')
-    .select(`
-      *,
-      dog_images(*),
-      health_tests(*)
-    `)
+    .select(selectQuery)
     .eq('slug', decoded)
     .in('status', ['available', 'breeding'])
     .single()
 
-  if (bySlug) return bySlug as DogWithRelations
+  if (bySlug) return { ...bySlug, health_tests: [] } as DogWithRelations
 
   // Try with the original (not decoded) value
   if (decoded !== slugOrId) {
     const { data: bySlugOriginal } = await supabase
       .from('dogs')
-      .select(`
-        *,
-        dog_images(*),
-        health_tests(*)
-      `)
+      .select(selectQuery)
       .eq('slug', slugOrId)
       .in('status', ['available', 'breeding'])
       .single()
 
-    if (bySlugOriginal) return bySlugOriginal as DogWithRelations
+    if (bySlugOriginal) return { ...bySlugOriginal, health_tests: [] } as DogWithRelations
   }
 
   // Try to find by name (for dogs where slug = name)
   const { data: byName } = await supabase
     .from('dogs')
-    .select(`
-      *,
-      dog_images(*),
-      health_tests(*)
-    `)
+    .select(selectQuery)
     .eq('name', decoded)
     .in('status', ['available', 'breeding'])
     .single()
 
-  if (byName) return byName as DogWithRelations
+  if (byName) return { ...byName, health_tests: [] } as DogWithRelations
 
   // Fall back to finding by ID (for dogs without slugs)
   const { data: byId } = await supabase
     .from('dogs')
-    .select(`
-      *,
-      dog_images(*),
-      health_tests(*)
-    `)
+    .select(selectQuery)
     .eq('id', slugOrId)
     .in('status', ['available', 'breeding'])
     .single()
 
-  return byId as DogWithRelations | null
+  if (byId) return { ...byId, health_tests: [] } as DogWithRelations
+
+  return null
 }
 
 export async function generateMetadata({ params }: DogPageProps): Promise<Metadata> {
