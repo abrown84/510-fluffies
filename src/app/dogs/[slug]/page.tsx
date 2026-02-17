@@ -33,6 +33,8 @@ async function getDog(slugOrId: string): Promise<DogWithRelations | null> {
     dog_images(*)
   `
 
+  type DogQueryResult = Dog & { dog_images: DogImage[] }
+
   // Try to find by slug first
   const { data: bySlug } = await supabase
     .from('dogs')
@@ -41,7 +43,10 @@ async function getDog(slugOrId: string): Promise<DogWithRelations | null> {
     .in('status', ['available', 'breeding'])
     .single()
 
-  if (bySlug) return { ...bySlug, health_tests: [] } as DogWithRelations
+  if (bySlug) {
+    const dog = bySlug as DogQueryResult
+    return { ...dog, health_tests: [] } as DogWithRelations
+  }
 
   // Try with the original (not decoded) value
   if (decoded !== slugOrId) {
@@ -52,7 +57,10 @@ async function getDog(slugOrId: string): Promise<DogWithRelations | null> {
       .in('status', ['available', 'breeding'])
       .single()
 
-    if (bySlugOriginal) return { ...bySlugOriginal, health_tests: [] } as DogWithRelations
+    if (bySlugOriginal) {
+      const dog = bySlugOriginal as DogQueryResult
+      return { ...dog, health_tests: [] } as DogWithRelations
+    }
   }
 
   // Try to find by name (for dogs where slug = name)
@@ -63,7 +71,10 @@ async function getDog(slugOrId: string): Promise<DogWithRelations | null> {
     .in('status', ['available', 'breeding'])
     .single()
 
-  if (byName) return { ...byName, health_tests: [] } as DogWithRelations
+  if (byName) {
+    const dog = byName as DogQueryResult
+    return { ...dog, health_tests: [] } as DogWithRelations
+  }
 
   // Fall back to finding by ID (for dogs without slugs)
   const { data: byId } = await supabase
@@ -73,7 +84,10 @@ async function getDog(slugOrId: string): Promise<DogWithRelations | null> {
     .in('status', ['available', 'breeding'])
     .single()
 
-  if (byId) return { ...byId, health_tests: [] } as DogWithRelations
+  if (byId) {
+    const dog = byId as DogQueryResult
+    return { ...dog, health_tests: [] } as DogWithRelations
+  }
 
   return null
 }
