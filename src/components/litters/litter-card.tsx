@@ -191,19 +191,27 @@ export function LitterCard({ litter }: LitterCardProps) {
         )}
 
         {/* CTA with enhanced styling */}
-        {litter.status !== 'sold' && (
-          <div className="mt-6">
-            <Link href="/apply">
+        <div className="mt-6 flex gap-3">
+          <Link href={`/litters/${litter.id}`} className="flex-1">
+            <Button
+              variant="outline"
+              className="w-full"
+            >
+              View Details
+            </Button>
+          </Link>
+          {litter.status !== 'sold' && (
+            <Link href="/apply" className="flex-1">
               <Button
                 variant="primary"
                 className="w-full relative overflow-hidden group/btn"
               >
-                <span className="relative z-10">Apply for This Litter</span>
+                <span className="relative z-10">Apply</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-600 transform translate-x-full group-hover/btn:translate-x-0 transition-transform duration-300" />
               </Button>
             </Link>
-          </div>
-        )}
+          )}
+        </div>
       </CardContent>
     </Card>
   )

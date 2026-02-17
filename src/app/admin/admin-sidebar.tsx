@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Dog, Baby, FileText, Mail, Settings, LayoutDashboard, DollarSign, Menu, X } from 'lucide-react'
+import { Dog, Baby, FileText, Mail, Settings, LayoutDashboard, DollarSign, Menu, X, Images, MessageSquareQuote, Newspaper } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { LogoutButton } from './logout-button'
 
@@ -11,7 +11,10 @@ const sidebarItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/dogs', label: 'Dogs', icon: Dog },
   { href: '/admin/litters', label: 'Litters', icon: Baby },
+  { href: '/admin/gallery', label: 'Gallery', icon: Images },
   { href: '/admin/pricing', label: 'Pricing', icon: DollarSign },
+  { href: '/admin/testimonials', label: 'Testimonials', icon: MessageSquareQuote },
+  { href: '/admin/blog', label: 'Blog', icon: Newspaper },
   { href: '/admin/applications', label: 'Applications', icon: FileText },
   { href: '/admin/messages', label: 'Messages', icon: Mail },
   { href: '/admin/settings', label: 'Settings', icon: Settings },
@@ -30,7 +33,7 @@ export function AdminSidebar({ userEmail }: AdminSidebarProps) {
       {/* Mobile menu button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed left-4 top-4 z-[60] rounded-lg bg-white p-2 shadow-md lg:hidden"
+        className="fixed right-4 top-4 z-[60] rounded-lg bg-white p-2 shadow-md lg:hidden"
         aria-label="Toggle menu"
       >
         {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -47,8 +50,8 @@ export function AdminSidebar({ userEmail }: AdminSidebarProps) {
       {/* Sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-50 w-64 border-r border-neutral-200 bg-white transition-transform duration-300 lg:translate-x-0',
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+          'fixed inset-y-0 right-0 z-50 w-64 border-l border-neutral-200 bg-white transition-transform duration-300 lg:right-auto lg:left-0 lg:border-l-0 lg:border-r lg:translate-x-0',
+          isOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'
         )}
       >
         <div className="flex h-full flex-col">

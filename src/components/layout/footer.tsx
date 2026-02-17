@@ -54,6 +54,30 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/family-tree"
+                  className="text-sm text-neutral-600 hover:text-amber-600"
+                >
+                  Family Tree
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/testimonials"
+                  className="text-sm text-neutral-600 hover:text-amber-600"
+                >
+                  Testimonials
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/blog"
+                  className="text-sm text-neutral-600 hover:text-amber-600"
+                >
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/apply"
                   className="text-sm text-neutral-600 hover:text-amber-600"
                 >
@@ -62,10 +86,10 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/health-standards"
+                  href="/waitlist"
                   className="text-sm text-neutral-600 hover:text-amber-600"
                 >
-                  Health Standards
+                  Join Waitlist
                 </Link>
               </li>
             </ul>
@@ -106,9 +130,17 @@ export function Footer() {
         </div>
 
         <div className="mt-12 border-t border-neutral-200 pt-8">
-          <p className="text-center text-sm text-neutral-500">
-            &copy; {new Date().getFullYear()} 510 Fluffies. All rights reserved.
-          </p>
+          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <p className="text-sm text-neutral-500">
+              &copy; {new Date().getFullYear()} 510 Fluffies. All rights reserved.
+            </p>
+            <Link
+              href="/login"
+              className="text-sm text-neutral-400 hover:text-amber-600 transition-colors"
+            >
+              Admin Login
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

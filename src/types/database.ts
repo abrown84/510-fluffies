@@ -489,6 +489,97 @@ export interface Database {
           created_at?: string
         }
       }
+      testimonials: {
+        Row: {
+          id: string
+          customer_name: string
+          customer_location: string | null
+          customer_image_url: string | null
+          title: string
+          content: string
+          rating: number | null
+          puppy_id: string | null
+          is_published: boolean
+          featured: boolean
+          display_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          customer_name: string
+          customer_location?: string | null
+          customer_image_url?: string | null
+          title: string
+          content: string
+          rating?: number | null
+          puppy_id?: string | null
+          is_published?: boolean
+          featured?: boolean
+          display_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          customer_name?: string
+          customer_location?: string | null
+          customer_image_url?: string | null
+          title?: string
+          content?: string
+          rating?: number | null
+          puppy_id?: string | null
+          is_published?: boolean
+          featured?: boolean
+          display_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      blog_posts: {
+        Row: {
+          id: string
+          title: string
+          slug: string
+          excerpt: string | null
+          content: string
+          featured_image_url: string | null
+          category: string | null
+          is_published: boolean
+          featured: boolean
+          published_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          slug: string
+          excerpt?: string | null
+          content: string
+          featured_image_url?: string | null
+          category?: string | null
+          is_published?: boolean
+          featured?: boolean
+          published_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          slug?: string
+          excerpt?: string | null
+          content?: string
+          featured_image_url?: string | null
+          category?: string | null
+          is_published?: boolean
+          featured?: boolean
+          published_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
@@ -554,4 +645,16 @@ export type PuppyWithWeights = Puppy & {
 
 export type LitterWithPuppies = LitterWithParents & {
   puppies: Puppy[]
+}
+
+export type Testimonial = Database['public']['Tables']['testimonials']['Row']
+export type TestimonialInsert = Database['public']['Tables']['testimonials']['Insert']
+export type TestimonialUpdate = Database['public']['Tables']['testimonials']['Update']
+
+export type BlogPost = Database['public']['Tables']['blog_posts']['Row']
+export type BlogPostInsert = Database['public']['Tables']['blog_posts']['Insert']
+export type BlogPostUpdate = Database['public']['Tables']['blog_posts']['Update']
+
+export type TestimonialWithPuppy = Testimonial & {
+  puppy: Puppy | null
 }

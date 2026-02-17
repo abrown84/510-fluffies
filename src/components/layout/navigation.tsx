@@ -10,9 +10,9 @@ const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/dogs', label: 'Our Dogs' },
   { href: '/litters', label: 'Litters' },
+  { href: '/family-tree', label: 'Family Tree' },
   { href: '/gallery', label: 'Gallery' },
   { href: '/pricing', label: 'Pricing' },
-  { href: '/health-standards', label: 'Health' },
   { href: '/contact', label: 'Contact' },
 ]
 

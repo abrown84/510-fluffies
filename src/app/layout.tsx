@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import { Cormorant_Garamond, Outfit } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
-import { Navigation } from '@/components/layout/navigation'
-import { Footer } from '@/components/layout/footer'
 import { ThreeBackground } from '@/components/layout/three-background'
+import { LayoutWrapper } from '@/components/layout/layout-wrapper'
 
 // Luxury display font for headings
 const cormorant = Cormorant_Garamond({
@@ -86,10 +86,9 @@ export default function RootLayout({
       <body className={`${cormorant.variable} ${outfit.variable} font-body antialiased`}>
         <ThreeBackground />
         <div className="relative flex min-h-screen flex-col">
-          <Navigation />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <LayoutWrapper>{children}</LayoutWrapper>
         </div>
+        <Analytics />
       </body>
     </html>
   )
