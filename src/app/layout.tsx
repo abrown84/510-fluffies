@@ -4,6 +4,67 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { ThreeBackground } from '@/components/layout/three-background'
 import { LayoutWrapper } from '@/components/layout/layout-wrapper'
+import { createClient } from '@/lib/supabase/server'
+
+// Site settings type
+export interface SiteSettings {
+  site_info: {
+    name: string
+    tagline: string
+    description: string
+    email: string
+    phone: string
+    location: string
+  }
+  social_links: {
+    instagram: string
+    facebook: string
+    tiktok: string
+    youtube: string
+  }
+}
+
+const defaultSettings: SiteSettings = {
+  site_info: {
+    name: 'C.D. Certified Frenchies',
+    tagline: 'Premium Fluffy French Bulldogs',
+    description: "Bay Area's premier breeder of exceptional Fluffy French Bulldogs.",
+    email: 'hello@cdcertifiedfrenchies.com',
+    phone: '',
+    location: 'Bay Area, California',
+  },
+  social_links: {
+    instagram: '@cd.certifiedfrenchies',
+    facebook: '',
+    tiktok: '',
+    youtube: '',
+  },
+}
+
+async function getSettings(): Promise<SiteSettings> {
+  const supabase = await createClient()
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, error } = await (supabase as any)
+      .from('site_settings')
+      .select('key, value')
+
+    if (error || !data || data.length === 0) {
+      return defaultSettings
+    }
+
+    const settings = { ...defaultSettings }
+    for (const row of data) {
+      if (row.key === 'site_info' || row.key === 'social_links') {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (settings as any)[row.key] = row.value
+      }
+    }
+    return settings
+  } catch {
+    return defaultSettings
+  }
+}
 
 // Luxury display font for headings
 const cormorant = Cormorant_Garamond({
@@ -76,17 +137,19 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const settings = await getSettings()
+
   return (
     <html lang="en">
       <body className={`${cormorant.variable} ${outfit.variable} font-body antialiased`}>
         <ThreeBackground />
         <div className="relative flex min-h-screen flex-col">
-          <LayoutWrapper>{children}</LayoutWrapper>
+          <LayoutWrapper settings={settings}>{children}</LayoutWrapper>
         </div>
         <Analytics />
       </body>

@@ -23,6 +23,8 @@ export interface Database {
           health_testing: string | null
           image_url: string | null
           gallery_urls: string[]
+          sire_id: string | null
+          dam_id: string | null
           created_at: string
           updated_at: string
         }
@@ -39,6 +41,8 @@ export interface Database {
           health_testing?: string | null
           image_url?: string | null
           gallery_urls?: string[]
+          sire_id?: string | null
+          dam_id?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -55,6 +59,8 @@ export interface Database {
           health_testing?: string | null
           image_url?: string | null
           gallery_urls?: string[]
+          sire_id?: string | null
+          dam_id?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -586,6 +592,35 @@ export interface Database {
           updated_at?: string
         }
       }
+      pedigree_layouts: {
+        Row: {
+          id: string
+          view_id: string
+          node_id: string
+          x: number
+          y: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          view_id?: string
+          node_id: string
+          x: number
+          y: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          view_id?: string
+          node_id?: string
+          x?: number
+          y?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
@@ -638,6 +673,11 @@ export type DogWithImages = Dog & {
   health_tests: HealthTest[]
 }
 
+export type DogWithLineage = Dog & {
+  sire: Dog | null
+  dam: Dog | null
+}
+
 export type LitterWithParents = Litter & {
   sire: Dog | null
   dam: Dog | null
@@ -664,3 +704,7 @@ export type BlogPostUpdate = Database['public']['Tables']['blog_posts']['Update'
 export type TestimonialWithPuppy = Testimonial & {
   puppy: Puppy | null
 }
+
+export type PedigreeLayout = Database['public']['Tables']['pedigree_layouts']['Row']
+export type PedigreeLayoutInsert = Database['public']['Tables']['pedigree_layouts']['Insert']
+export type PedigreeLayoutUpdate = Database['public']['Tables']['pedigree_layouts']['Update']

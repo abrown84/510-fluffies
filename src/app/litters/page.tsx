@@ -66,68 +66,100 @@ export default async function LittersPage() {
 
         {/* Available Section */}
         {available.length > 0 && (
-          <section className="mt-16">
-            <h2 className="text-2xl font-semibold text-neutral-900">
-              Available Now
-            </h2>
-            <p className="mt-2 text-neutral-600">
-              Puppies ready for their forever homes
-            </p>
-            <div className="mt-8 grid gap-6 md:grid-cols-2">
-              {available.map((litter) => (
-                <LitterCard key={litter.id} litter={litter} />
-              ))}
+          <section className="mt-16 relative overflow-hidden rounded-2xl p-8 sm:p-12">
+            {/* Bay Area Background */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: 'url(/photos/golden-gate-sunset.jpg)' }}
+            />
+            <div className="absolute inset-0 bg-[#fffbf5]/90" />
+            <div className="relative">
+              <h2 className="text-2xl font-semibold text-neutral-900">
+                Available Now
+              </h2>
+              <p className="mt-2 text-neutral-600">
+                Puppies ready for their forever homes
+              </p>
+              <div className="mt-8 grid gap-6 md:grid-cols-2">
+                {available.map((litter) => (
+                  <LitterCard key={litter.id} litter={litter} />
+                ))}
+              </div>
             </div>
           </section>
         )}
 
         {/* Born Section */}
         {born.length > 0 && (
-          <section className="mt-16">
-            <h2 className="text-2xl font-semibold text-neutral-900">
-              Recently Born
-            </h2>
-            <p className="mt-2 text-neutral-600">
-              New arrivals - puppies growing strong
-            </p>
-            <div className="mt-8 grid gap-6 md:grid-cols-2">
-              {born.map((litter) => (
-                <LitterCard key={litter.id} litter={litter} />
-              ))}
+          <section className="mt-8 relative overflow-hidden rounded-2xl p-8 sm:p-12">
+            {/* Bay Area Background */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: 'url(/photos/sf-waterfront-golden-gate.jpg)' }}
+            />
+            <div className="absolute inset-0 bg-[#fffbf5]/90" />
+            <div className="relative">
+              <h2 className="text-2xl font-semibold text-neutral-900">
+                Recently Born
+              </h2>
+              <p className="mt-2 text-neutral-600">
+                New arrivals - puppies growing strong
+              </p>
+              <div className="mt-8 grid gap-6 md:grid-cols-2">
+                {born.map((litter) => (
+                  <LitterCard key={litter.id} litter={litter} />
+                ))}
+              </div>
             </div>
           </section>
         )}
 
         {/* Expected Section */}
         {expected.length > 0 && (
-          <section className="mt-16">
-            <h2 className="text-2xl font-semibold text-neutral-900">
-              Expecting
-            </h2>
-            <p className="mt-2 text-neutral-600">
-              Litters on the way - accepting applications
-            </p>
-            <div className="mt-8 grid gap-6 md:grid-cols-2">
-              {expected.map((litter) => (
-                <LitterCard key={litter.id} litter={litter} />
-              ))}
+          <section className="mt-8 relative overflow-hidden rounded-2xl p-8 sm:p-12">
+            {/* Bay Area Background */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: 'url(/photos/alcatraz-sf-skyline.jpg)' }}
+            />
+            <div className="absolute inset-0 bg-[#fffbf5]/90" />
+            <div className="relative">
+              <h2 className="text-2xl font-semibold text-neutral-900">
+                Expecting
+              </h2>
+              <p className="mt-2 text-neutral-600">
+                Litters on the way - accepting applications
+              </p>
+              <div className="mt-8 grid gap-6 md:grid-cols-2">
+                {expected.map((litter) => (
+                  <LitterCard key={litter.id} litter={litter} />
+                ))}
+              </div>
             </div>
           </section>
         )}
 
         {/* Past Litters */}
         {sold.length > 0 && (
-          <section className="mt-16">
-            <h2 className="text-2xl font-semibold text-neutral-900">
-              Past Litters
-            </h2>
-            <p className="mt-2 text-neutral-600">
-              Our alumni - all placed in loving homes
-            </p>
-            <div className="mt-8 grid gap-6 md:grid-cols-2">
-              {sold.map((litter) => (
-                <LitterCard key={litter.id} litter={litter} />
-              ))}
+          <section className="mt-8 relative overflow-hidden rounded-2xl p-8 sm:p-12">
+            {/* Bay Area Background */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: 'url(/photos/painted-ladies.jpg)' }}
+            />
+            <div className="absolute inset-0 bg-[#fffbf5]/90" />
+            <div className="relative">
+              <h2 className="text-2xl font-semibold text-neutral-900">
+                Past Litters
+              </h2>
+              <p className="mt-2 text-neutral-600">
+                Our alumni - all placed in loving homes
+              </p>
+              <div className="mt-8 grid gap-6 md:grid-cols-2">
+                {sold.map((litter) => (
+                  <LitterCard key={litter.id} litter={litter} />
+                ))}
+              </div>
             </div>
           </section>
         )}

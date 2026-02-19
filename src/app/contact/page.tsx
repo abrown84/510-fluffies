@@ -154,46 +154,54 @@ export default function ContactPage() {
         </div>
 
         {/* FAQ Section */}
-        <section className="mt-16">
-          <h2 className="text-2xl font-semibold text-neutral-900">
-            Frequently Asked Questions
-          </h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2">
-            <div>
-              <h3 className="font-semibold text-neutral-900">
-                How do I apply for a puppy?
-              </h3>
-              <p className="mt-2 text-sm text-neutral-600">
-                Visit our Apply page to submit a puppy application. We review all
-                applications carefully and will reach out to discuss next steps.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-neutral-900">
-                What are your prices?
-              </h3>
-              <p className="mt-2 text-sm text-neutral-600">
-                Our puppies range from $5,000 to $10,000+ depending on color,
-                structure, and pedigree. Current pricing is listed on each litter.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-neutral-900">
-                Do you ship puppies?
-              </h3>
-              <p className="mt-2 text-sm text-neutral-600">
-                We prefer in-person pickup but can arrange flight nanny service
-                for approved families who cannot travel to California.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-neutral-900">
-                Can I visit before applying?
-              </h3>
-              <p className="mt-2 text-sm text-neutral-600">
-                We schedule visits after your application has been reviewed and
-                approved. This helps us focus time on serious inquiries.
-              </p>
+        <section className="mt-16 relative overflow-hidden rounded-2xl p-8 sm:p-12">
+          {/* Bay Area Background */}
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: 'url(/photos/golden-gate-fog.jpg)' }}
+          />
+          <div className="absolute inset-0 bg-[#fffbf5]/92" />
+          <div className="relative">
+            <h2 className="text-2xl font-semibold text-neutral-900">
+              Frequently Asked Questions
+            </h2>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2">
+              <div>
+                <h3 className="font-semibold text-neutral-900">
+                  How do I apply for a puppy?
+                </h3>
+                <p className="mt-2 text-sm text-neutral-600">
+                  Visit our Apply page to submit a puppy application. We review all
+                  applications carefully and will reach out to discuss next steps.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-neutral-900">
+                  What are your prices?
+                </h3>
+                <p className="mt-2 text-sm text-neutral-600">
+                  Our puppies range from $5,000 to $10,000+ depending on color,
+                  structure, and pedigree. Current pricing is listed on each litter.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-neutral-900">
+                  Do you ship puppies?
+                </h3>
+                <p className="mt-2 text-sm text-neutral-600">
+                  We prefer in-person pickup but can arrange flight nanny service
+                  for approved families who cannot travel to California.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-neutral-900">
+                  Can I visit before applying?
+                </h3>
+                <p className="mt-2 text-sm text-neutral-600">
+                  We schedule visits after your application has been reviewed and
+                  approved. This helps us focus time on serious inquiries.
+                </p>
+              </div>
             </div>
           </div>
         </section>

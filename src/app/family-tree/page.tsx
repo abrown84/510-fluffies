@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
-import { FamilyTree } from '@/components/family-tree/family-tree'
-import type { Dog, Litter, Puppy } from '@/types/database'
+import { PedigreeCanvas } from '@/components/pedigree'
+import type { Dog, DogWithLineage, Litter, Puppy } from '@/types/database'
 
 export const metadata: Metadata = {
   title: 'Family Tree',
@@ -29,6 +29,31 @@ async function getDogs(): Promise<Dog[]> {
   return (data as Dog[]) || []
 }
 
+async function getDogsWithLineage(): Promise<DogWithLineage[]> {
+  const supabase = await createClient()
+  // Fetch all dogs for the pedigree view (including sold/retired as they may be parents)
+  const { data, error } = await supabase
+    .from('dogs')
+    .select(`
+      *,
+      sire:sire_id(*),
+      dam:dam_id(*)
+    `)
+    .order('name')
+
+  if (error) {
+    console.error('Error fetching dogs with lineage:', error)
+    // Fallback: fetch dogs without lineage joins
+    const { data: fallbackData } = await supabase
+      .from('dogs')
+      .select('*')
+      .order('name')
+    return (fallbackData as DogWithLineage[])?.map(d => ({ ...d, sire: null, dam: null })) || []
+  }
+
+  return (data as DogWithLineage[]) || []
+}
+
 async function getLittersWithPuppies(): Promise<LitterWithRelations[]> {
   const supabase = await createClient()
   const { data } = await supabase
@@ -43,10 +68,18 @@ async function getLittersWithPuppies(): Promise<LitterWithRelations[]> {
   return (data as LitterWithRelations[]) || []
 }
 
+async function checkIsAdmin(): Promise<boolean> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  return !!user
+}
+
 export default async function FamilyTreePage() {
-  const [dogs, litters] = await Promise.all([
+  const [dogs, dogsWithLineage, litters, isAdmin] = await Promise.all([
     getDogs(),
+    getDogsWithLineage(),
     getLittersWithPuppies(),
+    checkIsAdmin(),
   ])
 
   return (
@@ -80,25 +113,26 @@ export default async function FamilyTreePage() {
 
       <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8">
 
-        {/* Legend */}
-        <div className="mt-8 flex justify-center gap-6">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full ring-2 ring-blue-400" />
-            <span className="text-sm text-neutral-600">Male</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full ring-2 ring-pink-400" />
-            <span className="text-sm text-neutral-600">Female</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-0.5 bg-amber-300" />
-            <span className="text-sm text-neutral-600">Parent Connection</span>
-          </div>
+        {/* Pedigree Canvas */}
+        <div className="mt-8">
+          <PedigreeCanvas
+            dogs={dogs}
+            litters={litters}
+            dogsWithLineage={dogsWithLineage}
+            viewId="default"
+            isEditable={isAdmin}
+          />
         </div>
 
-        {/* Family Tree */}
-        <div className="mt-12 rounded-2xl bg-white p-8 shadow-sm">
-          <FamilyTree dogs={dogs} litters={litters} />
+        {/* Instructions */}
+        <div className="mt-6 text-center text-sm text-neutral-500">
+          <p>
+            {isAdmin ? (
+              <>Drag nodes to rearrange • Positions are saved automatically • Use search to find specific dogs</>
+            ) : (
+              <>Click and drag to pan • Scroll to zoom • Click a dog to view details</>
+            )}
+          </p>
         </div>
 
         {/* CTA */}

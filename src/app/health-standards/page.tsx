@@ -60,48 +60,68 @@ const commitments = [
 
 export default function HealthStandardsPage() {
   return (
-    <div className="min-h-screen bg-[#fffbf5] pt-28 pb-12 sm:pt-32 sm:pb-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center">
-          <div className="flex justify-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-amber-100">
-              <Shield className="h-8 w-8 text-amber-600" />
-            </div>
+    <div className="min-h-screen bg-[#fffbf5]">
+      {/* Hero with Bay Area Background */}
+      <div className="relative pt-28 pb-16 sm:pt-32 sm:pb-20">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/photos/bay-bridge-road.jpg)' }}
+        />
+        {/* Overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1a1612]/80 via-[#1a1612]/70 to-[#fffbf5]" />
+
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c9a227]">
+              Our Commitment
+            </p>
+            <h1 className="mt-3 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              Health Standards
+            </h1>
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-neutral-200">
+              We are committed to producing healthy, happy puppies. Our breeding program
+              prioritizes health testing and responsible practices above all else.
+            </p>
           </div>
-          <h1 className="mt-6 text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl">
-            Health Standards
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-neutral-600">
-            We are committed to producing healthy, happy puppies. Our breeding program
-            prioritizes health testing and responsible practices above all else.
-          </p>
         </div>
+      </div>
+
+      <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8">
 
         {/* Health Testing Section */}
-        <section className="mt-16">
-          <h2 className="text-2xl font-semibold text-neutral-900">
-            Required Health Testing
-          </h2>
-          <p className="mt-2 text-neutral-600">
-            All our breeding dogs undergo the following evaluations
-          </p>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {healthTests.map((test) => (
-              <Card key={test.name}>
-                <CardHeader className="pb-2">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100">
-                      <test.icon className="h-5 w-5 text-amber-600" />
+        <section className="mt-16 relative overflow-hidden rounded-2xl p-8 sm:p-12">
+          {/* Bay Area Background */}
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: 'url(/photos/golden-gate-fog.jpg)' }}
+          />
+          <div className="absolute inset-0 bg-[#fffbf5]/92" />
+          <div className="relative">
+            <h2 className="text-2xl font-semibold text-neutral-900">
+              Required Health Testing
+            </h2>
+            <p className="mt-2 text-neutral-600">
+              All our breeding dogs undergo the following evaluations
+            </p>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {healthTests.map((test) => (
+                <Card key={test.name}>
+                  <CardHeader className="pb-2">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100">
+                        <test.icon className="h-5 w-5 text-amber-600" />
+                      </div>
+                      <CardTitle className="text-lg">{test.name}</CardTitle>
                     </div>
-                    <CardTitle className="text-lg">{test.name}</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-neutral-600">{test.description}</p>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-neutral-600">{test.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -157,22 +177,30 @@ export default function HealthStandardsPage() {
         </section>
 
         {/* Why It Matters */}
-        <section className="mt-16 text-center">
-          <h2 className="text-2xl font-semibold text-neutral-900">
-            Why Health Testing Matters
-          </h2>
-          <p className="mx-auto mt-4 max-w-3xl text-neutral-600">
-            French Bulldogs, especially fluffy varieties, can be prone to certain
-            health conditions. By thoroughly testing our breeding dogs before any
-            breeding takes place, we significantly reduce the risk of producing
-            puppies with genetic health problems. This means healthier puppies,
-            lower veterinary costs for families, and happier lives for our dogs.
-          </p>
-          <p className="mx-auto mt-4 max-w-3xl text-neutral-600">
-            We only breed dogs that have passed all required health evaluations.
-            No exceptions. This commitment to health is what sets responsible
-            breeders apart and ensures our puppies have the best start in life.
-          </p>
+        <section className="mt-16 relative overflow-hidden rounded-2xl p-8 sm:p-12">
+          {/* Bay Area Background */}
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: 'url(/photos/yerba-buena-aerial.jpg)' }}
+          />
+          <div className="absolute inset-0 bg-[#1a1612]/85" />
+          <div className="relative text-center">
+            <h2 className="text-2xl font-semibold text-white">
+              Why Health Testing Matters
+            </h2>
+            <p className="mx-auto mt-4 max-w-3xl text-white/80">
+              French Bulldogs, especially fluffy varieties, can be prone to certain
+              health conditions. By thoroughly testing our breeding dogs before any
+              breeding takes place, we significantly reduce the risk of producing
+              puppies with genetic health problems. This means healthier puppies,
+              lower veterinary costs for families, and happier lives for our dogs.
+            </p>
+            <p className="mx-auto mt-4 max-w-3xl text-white/80">
+              We only breed dogs that have passed all required health evaluations.
+              No exceptions. This commitment to health is what sets responsible
+              breeders apart and ensures our puppies have the best start in life.
+            </p>
+          </div>
         </section>
       </div>
     </div>

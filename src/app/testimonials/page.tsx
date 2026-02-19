@@ -62,37 +62,53 @@ export default async function TestimonialsPage() {
 
         {/* Featured Testimonials */}
         {featured.length > 0 && (
-          <section className="mt-16">
-            <h2 className="text-2xl font-semibold text-neutral-900 text-center mb-8">
-              Featured Stories
-            </h2>
-            <div className="grid gap-8 md:grid-cols-2">
-              {featured.map((testimonial) => (
-                <TestimonialCard
-                  key={testimonial.id}
-                  testimonial={testimonial}
-                  featured
-                />
-              ))}
+          <section className="mt-16 relative overflow-hidden rounded-2xl p-8 sm:p-12">
+            {/* Bay Area Background */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: 'url(/photos/golden-gate-fog.jpg)' }}
+            />
+            <div className="absolute inset-0 bg-[#fffbf5]/92" />
+            <div className="relative">
+              <h2 className="text-2xl font-semibold text-neutral-900 text-center mb-8">
+                Featured Stories
+              </h2>
+              <div className="grid gap-8 md:grid-cols-2">
+                {featured.map((testimonial) => (
+                  <TestimonialCard
+                    key={testimonial.id}
+                    testimonial={testimonial}
+                    featured
+                  />
+                ))}
+              </div>
             </div>
           </section>
         )}
 
         {/* All Testimonials */}
         {regular.length > 0 && (
-          <section className="mt-16">
-            {featured.length > 0 && (
-              <h2 className="text-2xl font-semibold text-neutral-900 text-center mb-8">
-                More Love Letters
-              </h2>
-            )}
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {regular.map((testimonial) => (
-                <TestimonialCard
-                  key={testimonial.id}
-                  testimonial={testimonial}
-                />
-              ))}
+          <section className="mt-8 relative overflow-hidden rounded-2xl p-8 sm:p-12">
+            {/* Bay Area Background */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: 'url(/photos/sf-waterfront-golden-gate.jpg)' }}
+            />
+            <div className="absolute inset-0 bg-[#fffbf5]/92" />
+            <div className="relative">
+              {featured.length > 0 && (
+                <h2 className="text-2xl font-semibold text-neutral-900 text-center mb-8">
+                  More Love Letters
+                </h2>
+              )}
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {regular.map((testimonial) => (
+                  <TestimonialCard
+                    key={testimonial.id}
+                    testimonial={testimonial}
+                  />
+                ))}
+              </div>
             </div>
           </section>
         )}
@@ -107,15 +123,23 @@ export default async function TestimonialsPage() {
         )}
 
         {/* CTA */}
-        <div className="mt-16 text-center">
-          <p className="text-neutral-600 mb-4">
-            Ready to start your own C.D. Certified Frenchies story?
-          </p>
-          <Link href="/apply">
-            <Button variant="primary" size="lg">
-              Apply for a Puppy
-            </Button>
-          </Link>
+        <div className="mt-16 relative overflow-hidden rounded-2xl p-8 sm:p-12">
+          {/* Bay Area Background */}
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: 'url(/photos/yerba-buena-aerial.jpg)' }}
+          />
+          <div className="absolute inset-0 bg-[#1a1612]/80" />
+          <div className="relative text-center">
+            <p className="text-white/90 mb-4">
+              Ready to start your own C.D. Certified Frenchies story?
+            </p>
+            <Link href="/apply">
+              <Button variant="primary" size="lg">
+                Apply for a Puppy
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { List, X, InstagramLogo, ArrowRight } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
+import type { SiteSettings } from './layout-wrapper'
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -16,7 +17,13 @@ const navLinks = [
   { href: '/contact', label: 'Contact' },
 ]
 
-export function Navigation() {
+interface NavigationProps {
+  settings: SiteSettings
+}
+
+export function Navigation({ settings }: NavigationProps) {
+  const instagramHandle = settings.social_links.instagram?.replace('@', '') || 'cd.certifiedfrenchies'
+  const instagramUrl = `https://www.instagram.com/${instagramHandle}/`
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -79,7 +86,7 @@ export function Navigation() {
         {/* Desktop CTA */}
         <div className="hidden items-center gap-6 lg:flex">
           <a
-            href="https://www.instagram.com/cd.certifiedfrenchies/"
+            href={instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
@@ -156,13 +163,13 @@ export function Navigation() {
             </Link>
 
             <a
-              href="https://www.instagram.com/cd.certifiedfrenchies/"
+              href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 flex items-center justify-center gap-2 py-3 font-body text-sm text-[#1a1612]/60 hover:text-[#c9a227] transition-colors"
             >
               <InstagramLogo weight="fill" className="h-5 w-5" />
-              @cd.certifiedfrenchies
+              @{instagramHandle}
             </a>
           </div>
         </div>

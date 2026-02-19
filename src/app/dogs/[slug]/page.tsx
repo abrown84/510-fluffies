@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { calculateAge, formatDate } from '@/lib/utils'
 import type { Dog, DogImage, HealthTest } from '@/types/database'
+import { ImageGallery } from '@/components/dogs/image-gallery'
 
 export const revalidate = 3600
 
@@ -140,44 +141,12 @@ export default async function DogPage({ params }: DogPageProps) {
         </Link>
 
         <div className="mt-8 grid gap-12 lg:grid-cols-2">
-          {/* Images */}
-          <div className="space-y-4">
-            {/* Main Image */}
-            <div className="relative aspect-square overflow-hidden rounded-2xl bg-neutral-100">
-              {dog.image_url ? (
-                <Image
-                  src={dog.image_url}
-                  alt={dog.name}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center">
-                  <span className="text-8xl">🐕</span>
-                </div>
-              )}
-            </div>
-
-            {/* Gallery */}
-            {images.length > 0 && (
-              <div className="grid grid-cols-4 gap-2">
-                {images.map((image) => (
-                  <div
-                    key={image.id}
-                    className="relative aspect-square overflow-hidden rounded-lg bg-neutral-100"
-                  >
-                    <Image
-                      src={image.image_url}
-                      alt={image.alt_text || dog.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          {/* Images - Interactive Gallery */}
+          <ImageGallery
+            mainImage={dog.image_url}
+            dogName={dog.name}
+            additionalImages={images}
+          />
 
           {/* Info */}
           <div>

@@ -9,6 +9,49 @@ import type { Dog, LitterWithParents } from '@/types/database'
 
 export const revalidate = 3600
 
+// Default settings
+const defaultSettings = {
+  site_info: {
+    name: 'C.D. Certified Frenchies',
+    tagline: 'Premium Fluffy French Bulldogs',
+    description: "Bay Area's premier breeder of exceptional Fluffy French Bulldogs.",
+    email: 'hello@cdcertifiedfrenchies.com',
+    phone: '',
+    location: 'Bay Area, California',
+  },
+  social_links: {
+    instagram: '@cd.certifiedfrenchies',
+    facebook: '',
+    tiktok: '',
+    youtube: '',
+  },
+}
+
+async function getSettings() {
+  const supabase = await createClient()
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, error } = await (supabase as any)
+      .from('site_settings')
+      .select('key, value')
+
+    if (error || !data || data.length === 0) {
+      return defaultSettings
+    }
+
+    const settings = { ...defaultSettings }
+    for (const row of data) {
+      if (row.key in settings) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (settings as any)[row.key] = row.value
+      }
+    }
+    return settings
+  } catch {
+    return defaultSettings
+  }
+}
+
 async function getFeaturedDogs(): Promise<Dog[]> {
   const supabase = await createClient()
   const { data } = await supabase
@@ -76,11 +119,16 @@ async function getHeroImages(): Promise<string[]> {
 }
 
 export default async function HomePage() {
-  const [dogs, litters, heroImages] = await Promise.all([
+  const [dogs, litters, heroImages, settings] = await Promise.all([
     getFeaturedDogs(),
     getAvailableLitters(),
     getHeroImages(),
+    getSettings(),
   ])
+
+  // Build Instagram URL from handle
+  const instagramHandle = settings.social_links.instagram?.replace('@', '') || 'cd.certifiedfrenchies'
+  const instagramUrl = `https://www.instagram.com/${instagramHandle}/`
 
   return (
     <>
@@ -155,8 +203,14 @@ export default async function HomePage() {
       </section>
 
       {/* Features Section - Refined */}
-      <section className="premium-section relative py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <section className="relative py-24 sm:py-32 overflow-hidden">
+        {/* Bay Area Background */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/photos/golden-gate-fog.jpg)' }}
+        />
+        <div className="absolute inset-0 bg-[#fffbf5]/90" />
+        <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           {/* Section header */}
           <div className="mx-auto max-w-2xl text-center">
             <span className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-[#c9a227]">
@@ -246,11 +300,17 @@ export default async function HomePage() {
 
       {/* Featured Dogs Section */}
       {dogs.length > 0 && (
-        <section className="relative bg-[#faf6f0] py-24 sm:py-32">
+        <section className="relative py-24 sm:py-32 overflow-hidden">
+          {/* Bay Area Background */}
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: 'url(/photos/painted-ladies.jpg)' }}
+          />
+          <div className="absolute inset-0 bg-[#faf6f0]/85" />
           {/* Subtle top border */}
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#c9a227]/20 to-transparent" />
 
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
             <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
               <div>
                 <span className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-[#c9a227]">
@@ -282,8 +342,14 @@ export default async function HomePage() {
 
       {/* Litters Section */}
       {litters.length > 0 && (
-        <section className="premium-section relative py-24 sm:py-32">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <section className="relative py-24 sm:py-32 overflow-hidden">
+          {/* Bay Area Background */}
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: 'url(/photos/alcatraz-sf-skyline.jpg)' }}
+          />
+          <div className="absolute inset-0 bg-[#fffbf5]/88" />
+          <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
             <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
               <div>
                 <span className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-[#c9a227]">
@@ -339,14 +405,14 @@ export default async function HomePage() {
 
             <div className="mt-10">
               <a
-                href="https://www.instagram.com/cd.certifiedfrenchies/"
+                href={instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <button className="luxury-button group rounded-none px-10 py-4">
                   <span className="flex items-center gap-3">
                     <InstagramLogo weight="bold" className="h-5 w-5" />
-                    @cd.certifiedfrenchies
+                    @{instagramHandle}
                     <ArrowRight weight="bold" className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </span>
                 </button>

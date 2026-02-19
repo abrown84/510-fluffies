@@ -61,30 +61,46 @@ export default async function BlogPage() {
 
         {/* Featured Posts */}
         {featured.length > 0 && (
-          <section className="mt-16">
-            <h2 className="text-2xl font-semibold text-neutral-900 mb-8">
-              Featured
-            </h2>
-            <div className="grid gap-8 md:grid-cols-2">
-              {featured.map((post) => (
-                <BlogCard key={post.id} post={post} featured />
-              ))}
+          <section className="mt-16 relative overflow-hidden rounded-2xl p-8 sm:p-12">
+            {/* Bay Area Background */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: 'url(/photos/golden-gate-fog.jpg)' }}
+            />
+            <div className="absolute inset-0 bg-[#fffbf5]/92" />
+            <div className="relative">
+              <h2 className="text-2xl font-semibold text-neutral-900 mb-8">
+                Featured
+              </h2>
+              <div className="grid gap-8 md:grid-cols-2">
+                {featured.map((post) => (
+                  <BlogCard key={post.id} post={post} featured />
+                ))}
+              </div>
             </div>
           </section>
         )}
 
         {/* All Posts */}
         {regular.length > 0 && (
-          <section className="mt-16">
-            {featured.length > 0 && (
-              <h2 className="text-2xl font-semibold text-neutral-900 mb-8">
-                Latest Posts
-              </h2>
-            )}
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {regular.map((post) => (
-                <BlogCard key={post.id} post={post} />
-              ))}
+          <section className="mt-8 relative overflow-hidden rounded-2xl p-8 sm:p-12">
+            {/* Bay Area Background */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: 'url(/photos/alcatraz-sf-skyline.jpg)' }}
+            />
+            <div className="absolute inset-0 bg-[#fffbf5]/92" />
+            <div className="relative">
+              {featured.length > 0 && (
+                <h2 className="text-2xl font-semibold text-neutral-900 mb-8">
+                  Latest Posts
+                </h2>
+              )}
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {regular.map((post) => (
+                  <BlogCard key={post.id} post={post} />
+                ))}
+              </div>
             </div>
           </section>
         )}

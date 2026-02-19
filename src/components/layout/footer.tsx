@@ -1,7 +1,16 @@
 import Link from 'next/link'
 import { Instagram, Mail, MapPin } from 'lucide-react'
+import type { SiteSettings } from './layout-wrapper'
 
-export function Footer() {
+interface FooterProps {
+  settings: SiteSettings
+}
+
+export function Footer({ settings }: FooterProps) {
+  const instagramHandle = settings.social_links.instagram?.replace('@', '') || 'cd.certifiedfrenchies'
+  const instagramUrl = `https://www.instagram.com/${instagramHandle}/`
+  const email = settings.site_info.email || 'hello@cdcertifiedfrenchies.com'
+  const location = settings.site_info.location || 'Bay Area, California'
   return (
     <footer className="border-t border-neutral-200 bg-neutral-50">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -20,7 +29,7 @@ export function Footer() {
             </p>
             <div className="mt-6 flex gap-4">
               <a
-                href="https://www.instagram.com/cd.certifiedfrenchies/"
+                href={instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900 text-white transition-colors hover:bg-amber-600"
@@ -103,26 +112,26 @@ export function Footer() {
             <ul className="mt-4 space-y-3">
               <li className="flex items-start gap-2 text-sm text-neutral-600">
                 <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0" />
-                <span>Bay Area, California</span>
+                <span>{location}</span>
               </li>
               <li>
                 <a
-                  href="mailto:hello@cdcertifiedfrenchies.com"
+                  href={`mailto:${email}`}
                   className="flex items-center gap-2 text-sm text-neutral-600 hover:text-amber-600"
                 >
                   <Mail className="h-4 w-4" />
-                  <span>hello@cdcertifiedfrenchies.com</span>
+                  <span>{email}</span>
                 </a>
               </li>
               <li>
                 <a
-                  href="https://www.instagram.com/cd.certifiedfrenchies/"
+                  href={instagramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-sm text-neutral-600 hover:text-amber-600"
                 >
                   <Instagram className="h-4 w-4" />
-                  <span>@cd.certifiedfrenchies</span>
+                  <span>@{instagramHandle}</span>
                 </a>
               </li>
             </ul>

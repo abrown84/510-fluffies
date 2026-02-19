@@ -59,34 +59,50 @@ export default async function DogsPage() {
 
         {/* Males Section */}
         {males.length > 0 && (
-          <section className="mt-16">
-            <h2 className="text-2xl font-semibold text-neutral-900">
-              Our Studs
-            </h2>
-            <p className="mt-2 text-neutral-600">
-              Champion bloodlines with exceptional structure
-            </p>
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {males.map((dog) => (
-                <DogCard key={dog.id} dog={dog} />
-              ))}
+          <section className="mt-16 relative overflow-hidden rounded-2xl p-8 sm:p-12">
+            {/* Bay Area Background */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: 'url(/photos/golden-gate-fog.jpg)' }}
+            />
+            <div className="absolute inset-0 bg-[#fffbf5]/92" />
+            <div className="relative">
+              <h2 className="text-2xl font-semibold text-neutral-900">
+                Our Studs
+              </h2>
+              <p className="mt-2 text-neutral-600">
+                Champion bloodlines with exceptional structure
+              </p>
+              <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {males.map((dog) => (
+                  <DogCard key={dog.id} dog={dog} />
+                ))}
+              </div>
             </div>
           </section>
         )}
 
         {/* Females Section */}
         {females.length > 0 && (
-          <section className="mt-16">
-            <h2 className="text-2xl font-semibold text-neutral-900">
-              Our Dams
-            </h2>
-            <p className="mt-2 text-neutral-600">
-              Beautiful mothers producing exceptional puppies
-            </p>
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {females.map((dog) => (
-                <DogCard key={dog.id} dog={dog} />
-              ))}
+          <section className="mt-8 relative overflow-hidden rounded-2xl p-8 sm:p-12">
+            {/* Bay Area Background */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: 'url(/photos/painted-ladies.jpg)' }}
+            />
+            <div className="absolute inset-0 bg-[#fffbf5]/92" />
+            <div className="relative">
+              <h2 className="text-2xl font-semibold text-neutral-900">
+                Our Dams
+              </h2>
+              <p className="mt-2 text-neutral-600">
+                Beautiful mothers producing exceptional puppies
+              </p>
+              <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {females.map((dog) => (
+                  <DogCard key={dog.id} dog={dog} />
+                ))}
+              </div>
             </div>
           </section>
         )}
