@@ -536,13 +536,16 @@ function PedigreeCanvasInner({
       const edgeType = isMale ? 'sireEdge' : 'damEdge'
       const relationshipType = isMale ? 'sire' : 'dam'
 
+      // Determine the correct target handle based on gender
+      const targetHandle = isMale ? 'sire' : 'dam'
+
       // Create the new edge
       const newEdge: Edge = {
         id: `edge_${relationshipType}_${connection.source}_to_${connection.target}`,
         source: connection.source,
         target: connection.target,
-        sourceHandle: connection.sourceHandle,
-        targetHandle: connection.targetHandle,
+        sourceHandle: connection.sourceHandle || 'offspring',
+        targetHandle: targetHandle,
         type: edgeType,
         data: { relationshipType },
       }
@@ -768,6 +771,7 @@ function PedigreeCanvasInner({
         nodesDraggable={isEditable}
         nodesConnectable={isEditable}
         edgesReconnectable={false}
+        connectionMode="loose"
         deleteKeyCode={isEditable ? ['Backspace', 'Delete'] : null}
         fitView
         minZoom={0.1}
@@ -1185,6 +1189,8 @@ export function PedigreeCanvas(props: PedigreeCanvasProps) {
       {/* Dog Info Modal */}
       <DogInfoModal
         dog={selectedDog}
+        allDogs={props.dogsWithLineage as Dog[]}
+        isEditable={props.isEditable}
         onClose={() => setSelectedDog(null)}
         onFocus={(dogId) => {
           setFocusDogId(dogId)

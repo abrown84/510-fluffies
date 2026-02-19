@@ -132,19 +132,22 @@ const DogNode = memo(function DogNode({
         </div>
       )}
 
-      {/* Parent connection handles - larger with hover effects */}
+      {/* Parent connection handles - separate for sire (blue/left) and dam (pink/right) */}
       <Handle
         type="target"
         position={Position.Top}
-        id="parent"
+        id="sire"
         isConnectable={true}
-        isConnectableStart={true}
-        isConnectableEnd={true}
-        className={cn(
-          "!w-4 !h-4 !bg-amber-400 !border-2 !border-white",
-          "transition-all duration-200 hover:scale-150 hover:!bg-amber-500 hover:shadow-lg",
-          "before:absolute before:inset-[-8px] before:content-[''] before:rounded-full"
-        )}
+        className="!w-4 !h-4 !bg-blue-400 !border-2 !border-white hover:!bg-blue-500 hover:scale-125 transition-all"
+        style={{ left: '33%' }}
+      />
+      <Handle
+        type="target"
+        position={Position.Top}
+        id="dam"
+        isConnectable={true}
+        className="!w-4 !h-4 !bg-pink-400 !border-2 !border-white hover:!bg-pink-500 hover:scale-125 transition-all"
+        style={{ left: '67%' }}
       />
 
       {/* Photo */}
@@ -227,42 +230,38 @@ const DogNode = memo(function DogNode({
         </span>
       </div>
 
-      {/* Offspring connection handle and collapse button */}
-      <div className="relative">
-        <Handle
-          type="source"
-          position={Position.Bottom}
-          id="offspring"
-          isConnectable={true}
-          isConnectableStart={true}
-          isConnectableEnd={true}
-          className={cn(
-            "!w-4 !h-4 !border-2 !border-white",
-            isMale ? "!bg-blue-400 hover:!bg-blue-500" : "!bg-pink-400 hover:!bg-pink-500",
-            "transition-all duration-200 hover:scale-150 hover:shadow-lg",
-            "before:absolute before:inset-[-8px] before:content-[''] before:rounded-full"
-          )}
-        />
-
-        {/* Collapse indicator for dogs with offspring */}
-        {hasOffspring && (
-          <div
-            className={cn(
-              'absolute -bottom-4 left-1/2 -translate-x-1/2 flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold shadow-sm border-2 border-white',
-              isCollapsed
-                ? 'bg-neutral-400 text-white'
-                : 'bg-green-500 text-white'
-            )}
-            title={isCollapsed ? 'Offspring hidden' : `${offspringCount} offspring`}
-          >
-            {isCollapsed ? (
-              <CaretDown className="h-3 w-3" />
-            ) : (
-              <CaretUp className="h-3 w-3" />
-            )}
-          </div>
+      {/* Offspring connection handle */}
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        id="offspring"
+        isConnectable={true}
+        isConnectableStart={true}
+        isConnectableEnd={true}
+        className={cn(
+          "!w-4 !h-4 !border-2 !border-white",
+          isMale ? "!bg-blue-400 hover:!bg-blue-500" : "!bg-pink-400 hover:!bg-pink-500",
+          "transition-all duration-200 hover:scale-150 hover:shadow-lg",
+          "before:absolute before:inset-[-8px] before:content-[''] before:rounded-full"
         )}
-      </div>
+      />
+
+      {/* Collapse indicator - positioned on right side, away from handle */}
+      {hasOffspring && (
+        <div
+          className={cn(
+            'absolute -right-2 bottom-8 flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold shadow-sm border-2 border-white',
+            isCollapsed
+              ? 'bg-neutral-400 text-white'
+              : 'bg-green-500 text-white'
+          )}
+          title={isCollapsed ? 'Double-click to show offspring' : `${offspringCount} offspring (double-click to hide)`}
+        >
+          {isCollapsed ? (
+            <CaretDown className="h-3 w-3" />
+          ) : offspringCount}
+        </div>
+      )}
     </div>
   )
 })
