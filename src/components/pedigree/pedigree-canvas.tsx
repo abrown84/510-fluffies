@@ -963,8 +963,8 @@ function PedigreeCanvasInner({
         </div>
       )}
 
-      {/* Enhanced Legend - Compact on mobile */}
-      <div className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 z-10">
+      {/* Enhanced Legend - Compact on mobile, positioned top center */}
+      <div className="absolute top-2 left-1/2 -translate-x-1/2 sm:top-4 z-10">
         <button
           onClick={() => setShowLegend(!showLegend)}
           className="flex items-center gap-1 text-[10px] sm:text-xs text-neutral-500 hover:text-neutral-700 mb-1"
