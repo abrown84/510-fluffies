@@ -11,7 +11,7 @@ const sidebarItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/dogs', label: 'Dogs', icon: Dog },
   { href: '/admin/litters', label: 'Litters', icon: Baby },
-  { href: '/family-tree', label: 'Family Tree', icon: GitBranch },
+  { href: '/admin/family-tree', label: 'Family Tree', icon: GitBranch },
   { href: '/admin/gallery', label: 'Gallery', icon: Images },
   { href: '/admin/pricing', label: 'Pricing', icon: DollarSign },
   { href: '/admin/testimonials', label: 'Testimonials', icon: MessageSquareQuote },
