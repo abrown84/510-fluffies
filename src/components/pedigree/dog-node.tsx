@@ -137,6 +137,9 @@ const DogNode = memo(function DogNode({
         type="target"
         position={Position.Top}
         id="parent"
+        isConnectable={true}
+        isConnectableStart={true}
+        isConnectableEnd={true}
         className={cn(
           "!w-4 !h-4 !bg-amber-400 !border-2 !border-white",
           "transition-all duration-200 hover:scale-150 hover:!bg-amber-500 hover:shadow-lg",
@@ -230,6 +233,9 @@ const DogNode = memo(function DogNode({
           type="source"
           position={Position.Bottom}
           id="offspring"
+          isConnectable={true}
+          isConnectableStart={true}
+          isConnectableEnd={true}
           className={cn(
             "!w-4 !h-4 !border-2 !border-white",
             isMale ? "!bg-blue-400 hover:!bg-blue-500" : "!bg-pink-400 hover:!bg-pink-500",

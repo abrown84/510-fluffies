@@ -678,19 +678,19 @@ function PedigreeCanvasInner({
   }, [fitView])
 
   return (
-    <div className="relative h-[600px] w-full rounded-lg border border-neutral-200 bg-neutral-50">
-      {/* Search Bar */}
-      <div className="absolute left-4 top-4 z-10 w-64">
+    <div className="relative h-[400px] sm:h-[500px] lg:h-[600px] w-full rounded-lg border border-neutral-200 bg-neutral-50">
+      {/* Search Bar - Compact on mobile */}
+      <div className="absolute left-2 sm:left-4 top-2 sm:top-4 z-10 w-40 sm:w-64">
         <div className="relative">
           <input
             type="text"
-            placeholder={showLitters ? "Search dogs or litters..." : "Search dogs..."}
+            placeholder={showLitters ? "Search..." : "Search..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-2 pr-10 text-sm shadow-sm focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/20"
+            className="w-full rounded-lg border border-neutral-300 bg-white px-2 sm:px-4 py-1.5 sm:py-2 pr-8 sm:pr-10 text-xs sm:text-sm shadow-sm focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/20"
           />
           <svg
-            className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400"
+            className="absolute right-2 sm:right-3 top-1/2 h-3 w-3 sm:h-4 sm:w-4 -translate-y-1/2 text-neutral-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -711,7 +711,7 @@ function PedigreeCanvasInner({
               <button
                 key={node.id}
                 onClick={() => handleSearch(node.id)}
-                className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm hover:bg-amber-50"
+                className="flex w-full items-center gap-2 px-2 sm:px-4 py-1.5 sm:py-2 text-left text-xs sm:text-sm hover:bg-amber-50"
               >
                 {node.data.type === 'dog' ? (
                   <>
@@ -725,12 +725,12 @@ function PedigreeCanvasInner({
                     >
                       {node.data.dog.gender === 'male' ? '♂' : '♀'}
                     </span>
-                    <span>{node.data.dog.name}</span>
+                    <span className="truncate">{node.data.dog.name}</span>
                   </>
                 ) : (
                   <>
                     <span className="text-amber-500">🐕</span>
-                    <span>{node.data.litter.name}</span>
+                    <span className="truncate">{node.data.litter.name}</span>
                   </>
                 )}
               </button>
@@ -739,14 +739,15 @@ function PedigreeCanvasInner({
         )}
       </div>
 
-      {/* Reset Layout Button */}
+      {/* Reset Layout Button - Hidden on mobile, shown via long-press or menu */}
       {isEditable && (
-        <div className="absolute right-4 top-4 z-10">
+        <div className="absolute right-2 sm:right-4 top-14 sm:top-4 z-10">
           <button
             onClick={handleResetLayout}
-            className="rounded-lg bg-white px-3 py-2 text-sm font-medium text-neutral-700 shadow-sm border border-neutral-200 hover:bg-neutral-50 transition-colors"
+            className="rounded-lg bg-white px-2 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-sm font-medium text-neutral-700 shadow-sm border border-neutral-200 hover:bg-neutral-50 transition-colors"
           >
-            Reset Layout
+            <span className="hidden sm:inline">Reset Layout</span>
+            <span className="sm:hidden">Reset</span>
           </button>
         </div>
       )}
@@ -766,7 +767,7 @@ function PedigreeCanvasInner({
         edgeTypes={edgeTypes}
         nodesDraggable={isEditable}
         nodesConnectable={isEditable}
-        edgesReconnectable={isEditable}
+        edgesReconnectable={false}
         deleteKeyCode={isEditable ? ['Backspace', 'Delete'] : null}
         fitView
         minZoom={0.1}
@@ -792,56 +793,53 @@ function PedigreeCanvasInner({
         />
       </ReactFlow>
 
-      {/* Quick Stats Panel */}
-      <div className="absolute top-4 right-4 z-10 flex flex-col gap-1 rounded-lg bg-white/95 px-3 py-2 text-xs shadow-sm backdrop-blur-sm border border-neutral-200">
-        <div className="flex items-center gap-1 text-neutral-500 font-medium border-b border-neutral-100 pb-1 mb-1">
+      {/* Quick Stats Panel - Compact on mobile */}
+      <div className="absolute top-4 right-4 z-10 rounded-lg bg-white/95 px-2 py-1.5 text-[10px] sm:px-3 sm:py-2 sm:text-xs shadow-sm backdrop-blur-sm border border-neutral-200">
+        <div className="hidden sm:flex items-center gap-1 text-neutral-500 font-medium border-b border-neutral-100 pb-1 mb-1">
           <Info className="h-3 w-3" />
           <span>Stats</span>
         </div>
-        <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
-          <span className="text-neutral-500">Total Dogs:</span>
-          <span className="font-medium text-neutral-700">{stats.totalDogs}</span>
-          <span className="text-neutral-500">Breeding:</span>
-          <span className="font-medium text-green-600">{stats.breedingDogs}</span>
-          <span className="text-neutral-500">Males:</span>
-          <span className="font-medium text-blue-600">{stats.males}</span>
-          <span className="text-neutral-500">Females:</span>
-          <span className="font-medium text-pink-600">{stats.females}</span>
-          <span className="text-neutral-500">Litters:</span>
-          <span className="font-medium text-amber-600">{stats.totalLitters}</span>
+        <div className="flex gap-2 sm:grid sm:grid-cols-2 sm:gap-x-4 sm:gap-y-0.5">
+          <span className="font-medium text-neutral-700">{stats.totalDogs}<span className="text-neutral-400 ml-0.5 hidden sm:inline">dogs</span></span>
+          <span className="font-medium text-blue-600">{stats.males}<span className="text-blue-400">♂</span></span>
+          <span className="font-medium text-pink-600">{stats.females}<span className="text-pink-400">♀</span></span>
+          <span className="hidden sm:inline text-neutral-500">Breeding:</span>
+          <span className="hidden sm:inline font-medium text-green-600">{stats.breedingDogs}</span>
+          <span className="hidden sm:inline text-neutral-500">Litters:</span>
+          <span className="hidden sm:inline font-medium text-amber-600">{stats.totalLitters}</span>
         </div>
       </div>
 
-      {/* Filter Controls */}
-      <div className="absolute left-4 top-16 z-10">
+      {/* Filter Controls - Compact on mobile */}
+      <div className="absolute left-2 sm:left-4 top-10 sm:top-16 z-10">
         <button
           onClick={() => setShowFilters(!showFilters)}
           className={cn(
-            "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium shadow-sm border transition-colors",
+            "flex items-center gap-1 sm:gap-1.5 rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs font-medium shadow-sm border transition-colors",
             hasActiveFilters
               ? "bg-amber-50 border-amber-300 text-amber-700"
               : "bg-white border-neutral-200 text-neutral-600 hover:bg-neutral-50"
           )}
         >
-          <Funnel className="h-3.5 w-3.5" />
-          Filters
+          <Funnel className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+          <span className="hidden sm:inline">Filters</span>
           {hasActiveFilters && (
-            <span className="ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-amber-500 text-[10px] text-white">
+            <span className="flex h-3.5 w-3.5 sm:h-4 sm:w-4 items-center justify-center rounded-full bg-amber-500 text-[9px] sm:text-[10px] text-white">
               {(statusFilter !== 'all' ? 1 : 0) + (genderFilter !== 'all' ? 1 : 0) + (yearFilter !== 'all' ? 1 : 0) + (focusedDogId ? 1 : 0)}
             </span>
           )}
-          {showFilters ? <CaretUp className="h-3 w-3" /> : <CaretDown className="h-3 w-3" />}
+          {showFilters ? <CaretUp className="h-2.5 w-2.5 sm:h-3 sm:w-3" /> : <CaretDown className="h-2.5 w-2.5 sm:h-3 sm:w-3" />}
         </button>
 
         {showFilters && (
-          <div className="absolute mt-1 w-56 rounded-lg border border-neutral-200 bg-white p-3 shadow-lg">
+          <div className="absolute mt-1 w-48 sm:w-56 rounded-lg border border-neutral-200 bg-white p-2 sm:p-3 shadow-lg text-[10px] sm:text-xs">
             {/* Status Filter */}
-            <div className="mb-3">
-              <label className="block text-xs font-medium text-neutral-600 mb-1">Status</label>
+            <div className="mb-2 sm:mb-3">
+              <label className="block font-medium text-neutral-600 mb-1">Status</label>
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
-                className="w-full rounded border border-neutral-200 px-2 py-1 text-xs focus:border-amber-400 focus:outline-none"
+                className="w-full rounded border border-neutral-200 px-2 py-1 focus:border-amber-400 focus:outline-none"
               >
                 <option value="all">All Statuses</option>
                 <option value="breeding">Breeding</option>
@@ -851,13 +849,13 @@ function PedigreeCanvasInner({
             </div>
 
             {/* Gender Filter */}
-            <div className="mb-3">
-              <label className="block text-xs font-medium text-neutral-600 mb-1">Gender</label>
+            <div className="mb-2 sm:mb-3">
+              <label className="block font-medium text-neutral-600 mb-1">Gender</label>
               <div className="flex gap-1">
                 <button
                   onClick={() => setGenderFilter('all')}
                   className={cn(
-                    "flex-1 rounded px-2 py-1 text-xs transition-colors",
+                    "flex-1 rounded px-1.5 sm:px-2 py-1 transition-colors",
                     genderFilter === 'all' ? "bg-amber-100 text-amber-700" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
                   )}
                 >
@@ -866,32 +864,32 @@ function PedigreeCanvasInner({
                 <button
                   onClick={() => setGenderFilter('male')}
                   className={cn(
-                    "flex-1 rounded px-2 py-1 text-xs transition-colors flex items-center justify-center gap-1",
+                    "flex-1 rounded px-1.5 sm:px-2 py-1 transition-colors flex items-center justify-center gap-0.5",
                     genderFilter === 'male' ? "bg-blue-100 text-blue-700" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
                   )}
                 >
-                  <GenderMale className="h-3 w-3" /> Male
+                  <GenderMale className="h-3 w-3" /> <span className="hidden sm:inline">Male</span><span className="sm:hidden">M</span>
                 </button>
                 <button
                   onClick={() => setGenderFilter('female')}
                   className={cn(
-                    "flex-1 rounded px-2 py-1 text-xs transition-colors flex items-center justify-center gap-1",
+                    "flex-1 rounded px-1.5 sm:px-2 py-1 transition-colors flex items-center justify-center gap-0.5",
                     genderFilter === 'female' ? "bg-pink-100 text-pink-700" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
                   )}
                 >
-                  <GenderFemale className="h-3 w-3" /> Female
+                  <GenderFemale className="h-3 w-3" /> <span className="hidden sm:inline">Female</span><span className="sm:hidden">F</span>
                 </button>
               </div>
             </div>
 
             {/* Year Filter */}
             {availableYears.length > 0 && (
-              <div className="mb-3">
-                <label className="block text-xs font-medium text-neutral-600 mb-1">Birth Year</label>
+              <div className="mb-2 sm:mb-3">
+                <label className="block font-medium text-neutral-600 mb-1">Birth Year</label>
                 <select
                   value={yearFilter}
                   onChange={(e) => setYearFilter(e.target.value)}
-                  className="w-full rounded border border-neutral-200 px-2 py-1 text-xs focus:border-amber-400 focus:outline-none"
+                  className="w-full rounded border border-neutral-200 px-2 py-1 focus:border-amber-400 focus:outline-none"
                 >
                   <option value="all">All Years</option>
                   {availableYears.map(year => (
@@ -905,152 +903,180 @@ function PedigreeCanvasInner({
             {hasActiveFilters && (
               <button
                 onClick={clearFilters}
-                className="w-full rounded bg-neutral-100 px-2 py-1.5 text-xs font-medium text-neutral-600 hover:bg-neutral-200 transition-colors flex items-center justify-center gap-1"
+                className="w-full rounded bg-neutral-100 px-2 py-1 sm:py-1.5 font-medium text-neutral-600 hover:bg-neutral-200 transition-colors flex items-center justify-center gap-1"
               >
-                <X className="h-3 w-3" /> Clear All Filters
+                <X className="h-3 w-3" /> Clear
               </button>
             )}
           </div>
         )}
       </div>
 
-      {/* Active Filter Pills */}
+      {/* Active Filter Pills - More compact on mobile */}
       {hasActiveFilters && (
-        <div className="absolute left-4 top-28 z-10 flex flex-wrap gap-1">
+        <div className="absolute left-2 sm:left-4 top-[4.5rem] sm:top-28 z-10 flex flex-wrap gap-1">
           {focusedDogId && (
             <button
               onClick={handleExitFocus}
-              className="flex items-center gap-1 rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-700 hover:bg-purple-200 transition-colors"
+              className="flex items-center gap-0.5 rounded-full bg-purple-100 px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-xs text-purple-700 hover:bg-purple-200 transition-colors"
             >
-              <Target className="h-3 w-3" />
-              Focus Mode
-              <X className="h-3 w-3" />
+              <Target className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+              <span className="hidden sm:inline">Focus</span>
+              <X className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
             </button>
           )}
           {statusFilter !== 'all' && (
             <button
               onClick={() => setStatusFilter('all')}
-              className="flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-700 hover:bg-green-200 transition-colors"
+              className="flex items-center gap-0.5 rounded-full bg-green-100 px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-xs text-green-700 hover:bg-green-200 transition-colors"
             >
               {statusFilter}
-              <X className="h-3 w-3" />
+              <X className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
             </button>
           )}
           {genderFilter !== 'all' && (
             <button
               onClick={() => setGenderFilter('all')}
               className={cn(
-                "flex items-center gap-1 rounded-full px-2 py-0.5 text-xs transition-colors",
+                "flex items-center gap-0.5 rounded-full px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-xs transition-colors",
                 genderFilter === 'male' ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : "bg-pink-100 text-pink-700 hover:bg-pink-200"
               )}
             >
-              {genderFilter === 'male' ? <GenderMale className="h-3 w-3" /> : <GenderFemale className="h-3 w-3" />}
-              {genderFilter}
-              <X className="h-3 w-3" />
+              {genderFilter === 'male' ? <GenderMale className="h-2.5 w-2.5 sm:h-3 sm:w-3" /> : <GenderFemale className="h-2.5 w-2.5 sm:h-3 sm:w-3" />}
+              <span className="hidden sm:inline">{genderFilter}</span>
+              <X className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
             </button>
           )}
           {yearFilter !== 'all' && (
             <button
               onClick={() => setYearFilter('all')}
-              className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700 hover:bg-amber-200 transition-colors"
+              className="flex items-center gap-0.5 rounded-full bg-amber-100 px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-xs text-amber-700 hover:bg-amber-200 transition-colors"
             >
               {yearFilter}
-              <X className="h-3 w-3" />
+              <X className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
             </button>
           )}
         </div>
       )}
 
-      {/* Enhanced Legend */}
-      <div className="absolute bottom-4 left-4 z-10">
+      {/* Enhanced Legend - Compact on mobile */}
+      <div className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 z-10">
         <button
           onClick={() => setShowLegend(!showLegend)}
-          className="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-700 mb-1"
+          className="flex items-center gap-1 text-[10px] sm:text-xs text-neutral-500 hover:text-neutral-700 mb-1"
         >
           {showLegend ? <CaretDown className="h-3 w-3" /> : <CaretUp className="h-3 w-3" />}
           Legend
         </button>
         {showLegend && (
-          <div className="rounded-lg bg-white/95 px-3 py-2.5 text-xs shadow-sm backdrop-blur-sm border border-neutral-200">
-            {/* Gender Section */}
-            <div className="mb-2">
-              <div className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wide mb-1">Gender</div>
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1">
-                  <div className="h-4 w-4 rounded-full bg-blue-100 flex items-center justify-center">
-                    <GenderMale className="h-2.5 w-2.5 text-blue-500" />
+          <div className="rounded-lg bg-white/95 px-2 py-1.5 sm:px-3 sm:py-2.5 text-[10px] sm:text-xs shadow-sm backdrop-blur-sm border border-neutral-200 max-w-[160px] sm:max-w-none">
+            {/* Mobile: Compact single-row layout */}
+            <div className="sm:hidden">
+              <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-0.5">
+                  <GenderMale className="h-2.5 w-2.5 text-blue-500" />
+                  <span className="text-neutral-500">M</span>
+                </div>
+                <div className="flex items-center gap-0.5">
+                  <GenderFemale className="h-2.5 w-2.5 text-pink-500" />
+                  <span className="text-neutral-500">F</span>
+                </div>
+                <div className="flex items-center gap-0.5">
+                  <div className="h-0.5 w-3 bg-blue-400" />
+                  <span className="text-neutral-500">Sire</span>
+                </div>
+                <div className="flex items-center gap-0.5">
+                  <div className="h-0.5 w-3 border-t border-dashed border-pink-400" />
+                  <span className="text-neutral-500">Dam</span>
+                </div>
+              </div>
+              <div className="text-neutral-400 mt-1 text-[9px]">
+                Tap for info • Pinch to zoom
+              </div>
+            </div>
+
+            {/* Desktop: Full layout */}
+            <div className="hidden sm:block">
+              {/* Gender Section */}
+              <div className="mb-2">
+                <div className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wide mb-1">Gender</div>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1">
+                    <div className="h-4 w-4 rounded-full bg-blue-100 flex items-center justify-center">
+                      <GenderMale className="h-2.5 w-2.5 text-blue-500" />
+                    </div>
+                    <span className="text-neutral-600">Male</span>
                   </div>
-                  <span className="text-neutral-600">Male</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <div className="h-4 w-4 rounded-full bg-pink-100 flex items-center justify-center">
-                    <GenderFemale className="h-2.5 w-2.5 text-pink-500" />
+                  <div className="flex items-center gap-1">
+                    <div className="h-4 w-4 rounded-full bg-pink-100 flex items-center justify-center">
+                      <GenderFemale className="h-2.5 w-2.5 text-pink-500" />
+                    </div>
+                    <span className="text-neutral-600">Female</span>
                   </div>
-                  <span className="text-neutral-600">Female</span>
                 </div>
               </div>
-            </div>
 
-            {/* Lines Section */}
-            <div className="mb-2">
-              <div className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wide mb-1">Connections</div>
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1">
-                  <div className="h-0.5 w-5 rounded-full bg-blue-400" />
-                  <span className="text-neutral-600">Sire</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <div className="h-0.5 w-5 border-t-2 border-dashed border-pink-400" />
-                  <span className="text-neutral-600">Dam</span>
+              {/* Lines Section */}
+              <div className="mb-2">
+                <div className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wide mb-1">Connections</div>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1">
+                    <div className="h-0.5 w-5 rounded-full bg-blue-400" />
+                    <span className="text-neutral-600">Sire</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="h-0.5 w-5 border-t-2 border-dashed border-pink-400" />
+                    <span className="text-neutral-600">Dam</span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Status Section */}
-            <div className="mb-2">
-              <div className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wide mb-1">Status</div>
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="flex items-center gap-1">
-                  <div className="h-2 w-2 rounded-full bg-green-500" />
-                  <span className="text-neutral-600">Breeding</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <div className="h-2 w-2 rounded-full bg-neutral-400" />
-                  <span className="text-neutral-600">Retired</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <div className="h-2 w-2 rounded-full bg-amber-500" />
-                  <span className="text-neutral-600">Available</span>
+              {/* Status Section */}
+              <div className="mb-2">
+                <div className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wide mb-1">Status</div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex items-center gap-1">
+                    <div className="h-2 w-2 rounded-full bg-green-500" />
+                    <span className="text-neutral-600">Breeding</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="h-2 w-2 rounded-full bg-neutral-400" />
+                    <span className="text-neutral-600">Retired</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="h-2 w-2 rounded-full bg-amber-500" />
+                    <span className="text-neutral-600">Available</span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Hover Highlighting Section */}
-            <div className="mb-2">
-              <div className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wide mb-1">Hover Highlights</div>
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="flex items-center gap-1">
-                  <div className="h-3 w-3 rounded border-2 border-amber-400 bg-amber-50" />
-                  <span className="text-neutral-600">Parents</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <div className="h-3 w-3 rounded border-2 border-purple-400 bg-purple-50" />
-                  <span className="text-neutral-600">Siblings</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <div className="h-3 w-3 rounded border-2 border-green-400 bg-green-50" />
-                  <span className="text-neutral-600">Offspring</span>
+              {/* Hover Highlighting Section */}
+              <div className="mb-2">
+                <div className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wide mb-1">Hover Highlights</div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex items-center gap-1">
+                    <div className="h-3 w-3 rounded border-2 border-amber-400 bg-amber-50" />
+                    <span className="text-neutral-600">Parents</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="h-3 w-3 rounded border-2 border-purple-400 bg-purple-50" />
+                    <span className="text-neutral-600">Siblings</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="h-3 w-3 rounded border-2 border-green-400 bg-green-50" />
+                    <span className="text-neutral-600">Offspring</span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Instructions */}
-            <div className="text-neutral-500 border-t border-neutral-200 pt-1.5 mt-1.5">
-              {isEditable ? (
-                <>Drag to move • Click line + Delete to remove • Double-click to collapse</>
-              ) : (
-                <>Click for details • Double-click to collapse/expand • Hover for relatives</>
-              )}
+              {/* Instructions */}
+              <div className="text-neutral-500 border-t border-neutral-200 pt-1.5 mt-1.5">
+                {isEditable ? (
+                  <>Drag to move • Click line + Delete to remove • Double-click to collapse</>
+                ) : (
+                  <>Click for details • Double-click to collapse/expand • Hover for relatives</>
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -1116,7 +1142,7 @@ export function PedigreeCanvas(props: PedigreeCanvasProps) {
 
   if (isLoading) {
     return (
-      <div className="flex h-[600px] w-full items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50">
+      <div className="flex h-[400px] sm:h-[500px] lg:h-[600px] w-full items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50">
         <div className="flex items-center gap-2 text-neutral-500">
           <svg
             className="h-5 w-5 animate-spin"

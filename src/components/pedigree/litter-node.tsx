@@ -27,6 +27,9 @@ const LitterNode = memo(function LitterNode({
         type="target"
         position={Position.Top}
         id="sire"
+        isConnectable={true}
+        isConnectableStart={true}
+        isConnectableEnd={true}
         className={cn(
           "!w-4 !h-4 !bg-blue-400 !border-2 !border-white !left-1/3",
           "transition-all duration-200 hover:scale-150 hover:!bg-blue-500 hover:shadow-lg",
@@ -38,6 +41,9 @@ const LitterNode = memo(function LitterNode({
         type="target"
         position={Position.Top}
         id="dam"
+        isConnectable={true}
+        isConnectableStart={true}
+        isConnectableEnd={true}
         className={cn(
           "!w-4 !h-4 !bg-pink-400 !border-2 !border-white !left-2/3",
           "transition-all duration-200 hover:scale-150 hover:!bg-pink-500 hover:shadow-lg",
@@ -117,6 +123,9 @@ const LitterNode = memo(function LitterNode({
         type="source"
         position={Position.Bottom}
         id="offspring"
+        isConnectable={true}
+        isConnectableStart={true}
+        isConnectableEnd={true}
         className={cn(
           "!w-4 !h-4 !bg-amber-400 !border-2 !border-white",
           "transition-all duration-200 hover:scale-150 hover:!bg-amber-500 hover:shadow-lg",
