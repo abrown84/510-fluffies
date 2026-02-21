@@ -16,6 +16,7 @@ import {
   useEdgesState,
   useReactFlow,
   addEdge,
+  ConnectionMode,
   type OnNodesChange,
   type OnEdgesChange,
   type OnConnect,
@@ -771,7 +772,7 @@ function PedigreeCanvasInner({
         nodesDraggable={isEditable}
         nodesConnectable={isEditable}
         edgesReconnectable={false}
-        connectionMode="loose"
+        connectionMode={ConnectionMode.Loose}
         deleteKeyCode={isEditable ? ['Backspace', 'Delete'] : null}
         fitView
         minZoom={0.1}

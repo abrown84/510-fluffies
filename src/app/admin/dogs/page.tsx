@@ -62,12 +62,12 @@ function DogCard({ dog, litterCount }: { dog: Dog; litterCount?: number }) {
         ) : null}
         {isExternal && (
           <div className="absolute top-2 left-2 flex flex-col gap-1">
-            <Badge variant="secondary" className="text-xs">
+            <Badge variant="default" className="text-xs">
               {dog.ownership_type === 'stud_service' ? 'Stud Service' :
                dog.ownership_type === 'co_owned' ? 'Co-owned' : 'External'}
             </Badge>
             {dog.owner_name && (
-              <Badge variant="outline" className="text-xs bg-white/90">
+              <Badge variant="purple" className="text-xs">
                 {dog.owner_name}
               </Badge>
             )}

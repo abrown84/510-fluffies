@@ -355,6 +355,8 @@ export function FamilyTreeProvider({
       color: data.color,
       date_of_birth: data.date_of_birth || null,
       status: data.status || 'breeding',
+      ownership_type: data.ownership_type || 'owned',
+      owner_name: data.owner_name || null,
       is_fluffy: data.is_fluffy || false,
       bio: data.bio || null,
       health_testing: data.health_testing || null,
