@@ -17,6 +17,7 @@ async function getDogs(): Promise<Dog[]> {
     .from('dogs')
     .select('*')
     .in('status', ['available', 'breeding'])
+    .in('ownership_type', ['owned', 'co_owned']) // Only show dogs we own
     .order('name', { ascending: true })
   return (data as Dog[]) || []
 }

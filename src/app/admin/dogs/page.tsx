@@ -38,8 +38,10 @@ async function getLitters(): Promise<LitterWithParents[]> {
 }
 
 function DogCard({ dog, litterCount }: { dog: Dog; litterCount?: number }) {
+  const isExternal = dog.ownership_type && dog.ownership_type !== 'owned'
+
   return (
-    <Card className="overflow-hidden">
+    <Card className={`overflow-hidden ${isExternal ? 'border-dashed border-neutral-400' : ''}`}>
       <div className="relative aspect-square bg-neutral-100">
         {dog.image_url ? (
           <Image
@@ -58,6 +60,19 @@ function DogCard({ dog, litterCount }: { dog: Dog; litterCount?: number }) {
             <Badge variant="default" className="text-white">{dog.status}</Badge>
           </div>
         ) : null}
+        {isExternal && (
+          <div className="absolute top-2 left-2 flex flex-col gap-1">
+            <Badge variant="secondary" className="text-xs">
+              {dog.ownership_type === 'stud_service' ? 'Stud Service' :
+               dog.ownership_type === 'co_owned' ? 'Co-owned' : 'External'}
+            </Badge>
+            {dog.owner_name && (
+              <Badge variant="outline" className="text-xs bg-white/90">
+                {dog.owner_name}
+              </Badge>
+            )}
+          </div>
+        )}
       </div>
       <CardContent className="p-4">
         <div className="flex items-start justify-between">
@@ -114,11 +129,14 @@ export default async function AdminDogsPage() {
     }
   })
 
-  // Separate dogs by role
-  const activeDogs = dogs.filter(d => d.status === 'available' || d.status === 'breeding')
+  // Separate dogs by role and ownership
+  const ownedDogs = dogs.filter(d => !d.ownership_type || d.ownership_type === 'owned' || d.ownership_type === 'co_owned')
+  const externalDogs = dogs.filter(d => d.ownership_type === 'external' || d.ownership_type === 'stud_service')
+
+  const activeDogs = ownedDogs.filter(d => d.status === 'available' || d.status === 'breeding')
   const studs = activeDogs.filter(d => d.gender === 'male')
   const dams = activeDogs.filter(d => d.gender === 'female')
-  const otherDogs = dogs.filter(d => d.status === 'retired' || d.status === 'sold')
+  const otherDogs = ownedDogs.filter(d => d.status === 'retired' || d.status === 'sold')
 
   // Group litters by dam for the family view
   const littersByDam = new Map<string, LitterWithParents[]>()
@@ -264,6 +282,28 @@ export default async function AdminDogsPage() {
               </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {otherDogs.map((dog) => (
+                  <DogCard
+                    key={dog.id}
+                    dog={dog}
+                    litterCount={litterCountByDog.get(dog.id)}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* External Dogs Section */}
+          {externalDogs.length > 0 && (
+            <section>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-3 h-3 rounded-full border-2 border-dashed border-neutral-400" />
+                <h2 className="text-lg font-semibold text-neutral-800">
+                  External Dogs ({externalDogs.length})
+                </h2>
+                <span className="text-sm text-neutral-500">— For lineage only, not owned</span>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {externalDogs.map((dog) => (
                   <DogCard
                     key={dog.id}
                     dog={dog}

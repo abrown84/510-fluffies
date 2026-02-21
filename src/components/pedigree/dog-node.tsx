@@ -29,6 +29,7 @@ const DogNode = memo(function DogNode({
 }: NodeProps<Node<DogNodeData>>) {
   const { dog, isHighlighted, relationshipType, isDimmed, parentNames, offspringCount, generation, isCollapsed, hasOffspring } = data
   const isMale = dog.gender === 'male'
+  const isExternal = dog.ownership_type && dog.ownership_type !== 'owned'
   const [showTooltip, setShowTooltip] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -72,9 +73,10 @@ const DogNode = memo(function DogNode({
   return (
     <div
       className={cn(
-        'relative w-40 rounded-xl bg-white shadow-md transition-all duration-200',
+        'relative w-40 rounded-xl shadow-md transition-all duration-200',
         'border-2',
         isMale ? 'border-blue-300' : 'border-pink-300',
+        isExternal ? 'border-dashed bg-neutral-50' : 'bg-white',
         selected && 'ring-2 ring-amber-400 ring-offset-2',
         isHighlighted && 'ring-4 ring-amber-400 ring-offset-2 scale-105',
         getRelationshipStyles()
@@ -100,6 +102,22 @@ const DogNode = memo(function DogNode({
             )}>
               {dog.status}
             </span>
+
+            {isExternal && (
+              <>
+                <span className="text-neutral-400">Ownership:</span>
+                <span className="text-neutral-300">
+                  {dog.ownership_type === 'stud_service' ? 'Stud Service' :
+                   dog.ownership_type === 'co_owned' ? 'Co-owned' : 'External'}
+                </span>
+                {dog.owner_name && (
+                  <>
+                    <span className="text-neutral-400">Owner:</span>
+                    <span className="text-neutral-300">{dog.owner_name}</span>
+                  </>
+                )}
+              </>
+            )}
 
             {parentNames?.sire && (
               <>
@@ -197,9 +215,17 @@ const DogNode = memo(function DogNode({
         )}
 
         {/* Generation badge */}
-        {generation !== undefined && !relationshipType && (
+        {generation !== undefined && !relationshipType && !isExternal && (
           <div className="absolute top-2 left-2 flex h-5 px-1.5 items-center justify-center rounded text-[9px] font-bold text-white shadow-md bg-purple-500">
             Gen {generation}
+          </div>
+        )}
+
+        {/* External dog badge */}
+        {isExternal && (
+          <div className="absolute top-2 left-2 flex h-5 px-1.5 items-center justify-center rounded text-[9px] font-bold text-white shadow-md bg-neutral-500">
+            {dog.ownership_type === 'stud_service' ? 'Stud' :
+             dog.ownership_type === 'co_owned' ? 'Co-owned' : 'External'}
           </div>
         )}
       </div>

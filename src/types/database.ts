@@ -18,6 +18,8 @@ export interface Database {
           color: string
           date_of_birth: string | null
           status: 'available' | 'reserved' | 'sold' | 'breeding' | 'retired'
+          ownership_type: 'owned' | 'external' | 'stud_service' | 'co_owned'
+          owner_name: string | null
           is_fluffy: boolean
           bio: string | null
           health_testing: string | null
@@ -36,6 +38,8 @@ export interface Database {
           color: string
           date_of_birth?: string | null
           status?: 'available' | 'reserved' | 'sold' | 'breeding' | 'retired'
+          ownership_type?: 'owned' | 'external' | 'stud_service' | 'co_owned'
+          owner_name?: string | null
           is_fluffy?: boolean
           bio?: string | null
           health_testing?: string | null
@@ -54,6 +58,8 @@ export interface Database {
           color?: string
           date_of_birth?: string | null
           status?: 'available' | 'reserved' | 'sold' | 'breeding' | 'retired'
+          ownership_type?: 'owned' | 'external' | 'stud_service' | 'co_owned'
+          owner_name?: string | null
           is_fluffy?: boolean
           bio?: string | null
           health_testing?: string | null

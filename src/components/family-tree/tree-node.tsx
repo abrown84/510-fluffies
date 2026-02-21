@@ -13,6 +13,8 @@ interface TreeNodeProps {
 }
 
 export function TreeNode({ dog, size = 'md', showLink = true }: TreeNodeProps) {
+  const isExternal = dog.ownership_type && dog.ownership_type !== 'owned'
+
   const sizeClasses = {
     sm: 'w-16 h-16',
     md: 'w-24 h-24',
@@ -32,10 +34,15 @@ export function TreeNode({ dog, size = 'md', showLink = true }: TreeNodeProps) {
     )}>
       {/* Avatar */}
       <div className={cn(
-        'relative overflow-hidden rounded-full ring-2 ring-offset-2',
-        dog.gender === 'male' ? 'ring-blue-400' : 'ring-pink-400',
+        'relative overflow-hidden rounded-full ring-offset-2',
+        isExternal ? 'ring-2 ring-neutral-400 ring-dashed' : 'ring-2',
+        !isExternal && (dog.gender === 'male' ? 'ring-blue-400' : 'ring-pink-400'),
         sizeClasses[size]
       )}>
+        {/* Dashed border overlay for external dogs */}
+        {isExternal && (
+          <div className="absolute inset-0 rounded-full border-2 border-dashed border-neutral-400 z-10 pointer-events-none" />
+        )}
         {dog.image_url ? (
           <Image
             src={dog.image_url}
@@ -66,6 +73,14 @@ export function TreeNode({ dog, size = 'md', showLink = true }: TreeNodeProps) {
           )}
           <span className="text-xs text-neutral-500">{dog.color}</span>
         </div>
+        {isExternal && (
+          <span className="mt-0.5 text-[10px] text-neutral-400 italic">
+            {dog.owner_name || (
+              dog.ownership_type === 'stud_service' ? 'Stud Service' :
+              dog.ownership_type === 'co_owned' ? 'Co-owned' : 'External'
+            )}
+          </span>
+        )}
       </div>
     </div>
   )

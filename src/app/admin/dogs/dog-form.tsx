@@ -22,6 +22,8 @@ const dogSchema = z.object({
   color: z.string().min(1, 'Color is required'),
   date_of_birth: z.string().optional(),
   status: z.enum(['available', 'reserved', 'sold', 'breeding', 'retired']),
+  ownership_type: z.enum(['owned', 'external', 'stud_service', 'co_owned']),
+  owner_name: z.string().optional(),
   is_fluffy: z.boolean(),
   bio: z.string().optional(),
   health_testing: z.string().optional(),
@@ -54,6 +56,8 @@ export function DogForm({ dog }: DogFormProps) {
       color: dog?.color || '',
       date_of_birth: dog?.date_of_birth || '',
       status: (dog?.status as DogFormData['status']) || 'available',
+      ownership_type: (dog?.ownership_type as DogFormData['ownership_type']) || 'owned',
+      owner_name: dog?.owner_name || '',
       is_fluffy: dog?.is_fluffy ?? true,
       bio: dog?.bio || '',
       health_testing: dog?.health_testing || '',
@@ -62,6 +66,7 @@ export function DogForm({ dog }: DogFormProps) {
   })
 
   const imageUrl = watch('image_url')
+  const ownershipType = watch('ownership_type')
 
   const name = watch('name')
 
@@ -86,6 +91,7 @@ export function DogForm({ dog }: DogFormProps) {
         bio: data.bio || null,
         health_testing: data.health_testing || null,
         image_url: data.image_url || null,
+        owner_name: data.owner_name || null,
       }
 
       if (dog) {
@@ -147,7 +153,7 @@ export function DogForm({ dog }: DogFormProps) {
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <label className="block text-sm font-medium text-neutral-700">
             Gender *
@@ -180,7 +186,40 @@ export function DogForm({ dog }: DogFormProps) {
             <option value="retired">Retired</option>
           </Select>
         </div>
+        <div>
+          <label className="block text-sm font-medium text-neutral-700">
+            Ownership *
+          </label>
+          <Select {...register('ownership_type')} className="mt-1">
+            <option value="owned">Owned</option>
+            <option value="co_owned">Co-owned</option>
+            <option value="external">External</option>
+            <option value="stud_service">Stud Service</option>
+          </Select>
+          <p className="mt-1 text-xs text-neutral-500">
+            External dogs won&apos;t appear in public listings
+          </p>
+        </div>
       </div>
+
+      {/* Owner Name - shown for non-owned dogs or co-owned */}
+      {ownershipType && ownershipType !== 'owned' && (
+        <div>
+          <label className="block text-sm font-medium text-neutral-700">
+            Owner / Kennel Name
+          </label>
+          <Input
+            {...register('owner_name')}
+            className="mt-1 max-w-md"
+            placeholder={ownershipType === 'co_owned' ? 'Co-owner name' : 'e.g., Smith Kennels'}
+          />
+          <p className="mt-1 text-xs text-neutral-500">
+            {ownershipType === 'stud_service' && 'Name of the stud service provider'}
+            {ownershipType === 'external' && 'Name of the external owner or kennel'}
+            {ownershipType === 'co_owned' && 'Name of the co-owner'}
+          </p>
+        </div>
+      )}
 
       <div>
         <label className="block text-sm font-medium text-neutral-700">
