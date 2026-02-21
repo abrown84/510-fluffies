@@ -1,4 +1,6 @@
 export { PedigreeCanvas } from './pedigree-canvas'
+export { FamilyListView } from './family-list-view'
+export { FamilyTreeView } from './family-tree-view'
 export { DogNode } from './dog-node'
 export { LitterNode } from './litter-node'
 export { SireEdge, DamEdge } from './pedigree-edges'

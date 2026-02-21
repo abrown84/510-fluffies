@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
-import { PedigreeCanvas } from '@/components/pedigree'
+import { FamilyTreeView } from '@/components/pedigree'
 import type { Dog, DogWithLineage, Litter, Puppy } from '@/types/database'
 
 export const metadata: Metadata = {
@@ -113,26 +113,15 @@ export default async function FamilyTreePage() {
 
       <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8">
 
-        {/* Pedigree Canvas */}
+        {/* Family Tree with View Toggle */}
         <div className="mt-8">
-          <PedigreeCanvas
+          <FamilyTreeView
             dogs={dogs}
             litters={litters}
             dogsWithLineage={dogsWithLineage}
             viewId="default"
             isEditable={isAdmin}
           />
-        </div>
-
-        {/* Instructions */}
-        <div className="mt-6 text-center text-sm text-neutral-500">
-          <p>
-            {isAdmin ? (
-              <>Drag nodes to rearrange • Positions are saved automatically • Use search to find specific dogs</>
-            ) : (
-              <>Click and drag to pan • Scroll to zoom • Click a dog to view details</>
-            )}
-          </p>
         </div>
 
         {/* CTA */}
