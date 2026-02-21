@@ -142,13 +142,24 @@ function PedigreeCanvasInner({
 }: PedigreeCanvasInnerProps) {
   const { fitView, setCenter, getZoom } = useReactFlow()
   const [searchQuery, setSearchQuery] = useState('')
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detect mobile viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
   const [highlightedNodeId, setHighlightedNodeId] = useState<string | null>(null)
   const [hoveredDogId, setHoveredDogId] = useState<string | null>(null)
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
   const [genderFilter, setGenderFilter] = useState<GenderFilter>('all')
   const [yearFilter, setYearFilter] = useState<string>('all')
   const [showFilters, setShowFilters] = useState(false)
-  const [showLegend, setShowLegend] = useState(true)
+  const [showLegend, setShowLegend] = useState(false) // Hidden by default, especially for mobile
   const [collapsedDogIds, setCollapsedDogIds] = useState<Set<string>>(new Set())
 
   // Use external focus state if provided, otherwise use internal
@@ -303,6 +314,39 @@ function PedigreeCanvasInner({
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChangeBase] = useEdgesState(initialEdges)
   const [selectedEdge, setSelectedEdge] = useState<string | null>(null)
+
+  // Toggle collapse for a dog (used by button tap, long-press, and double-click)
+  const toggleCollapse = useCallback(
+    (dogId: string) => {
+      const hasOffspring = (descendantsMap.get(dogId)?.size ?? 0) > 0
+      if (hasOffspring) {
+        setCollapsedDogIds(prev => {
+          const next = new Set(prev)
+          if (next.has(dogId)) {
+            next.delete(dogId)
+          } else {
+            next.add(dogId)
+          }
+          return next
+        })
+      }
+    },
+    [descendantsMap]
+  )
+
+  // Update compact mode based on mobile detection and add collapse handler
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((n) => ({
+        ...n,
+        data: {
+          ...n.data,
+          compact: isMobile,
+          onToggleCollapse: toggleCollapse,
+        },
+      }))
+    )
+  }, [isMobile, setNodes, toggleCollapse])
 
   // Update highlighted node in node data
   useEffect(() => {
@@ -643,6 +687,7 @@ function PedigreeCanvasInner({
     [descendantsMap]
   )
 
+
   // Handle focus mode
   const handleFocusDog = useCallback(
     (dogId: string) => {
@@ -743,12 +788,12 @@ function PedigreeCanvasInner({
         )}
       </div>
 
-      {/* Reset Layout Button - Hidden on mobile, shown via long-press or menu */}
+      {/* Reset Layout Button - Bottom-right on mobile for easy access */}
       {isEditable && (
-        <div className="absolute right-2 sm:right-4 top-14 sm:top-4 z-10">
+        <div className="absolute right-2 bottom-16 sm:right-4 sm:top-4 sm:bottom-auto z-10">
           <button
             onClick={handleResetLayout}
-            className="rounded-lg bg-white px-2 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-sm font-medium text-neutral-700 shadow-sm border border-neutral-200 hover:bg-neutral-50 transition-colors"
+            className="rounded-lg bg-white px-2 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-sm font-medium text-neutral-700 shadow-sm border border-neutral-200 hover:bg-neutral-50 active:bg-neutral-100 transition-colors"
           >
             <span className="hidden sm:inline">Reset Layout</span>
             <span className="sm:hidden">Reset</span>
@@ -783,35 +828,38 @@ function PedigreeCanvasInner({
         connectionLineStyle={{ stroke: '#fbbf24', strokeWidth: 2 }}
       >
         <Background color="#e5e5e5" gap={20} />
-        <Controls showInteractive={false} />
-        <MiniMap
-          nodeColor={(node) => {
-            const data = node.data as PedigreeNodeData | undefined
-            if (data?.type === 'litter') return '#fbbf24'
-            if (data?.type === 'dog') {
-              return data.dog?.gender === 'male' ? '#60a5fa' : '#f472b6'
-            }
-            return '#9ca3af'
-          }}
-          maskColor="rgba(255, 251, 245, 0.8)"
-          className="!bg-white !border-neutral-200"
-        />
+        <Controls showInteractive={false} className="!bottom-2 !left-2 sm:!bottom-4 sm:!left-4" />
+        {/* MiniMap - hidden on mobile for cleaner touch experience */}
+        {!isMobile && (
+          <MiniMap
+            nodeColor={(node) => {
+              const data = node.data as PedigreeNodeData | undefined
+              if (data?.type === 'litter') return '#fbbf24'
+              if (data?.type === 'dog') {
+                return data.dog?.gender === 'male' ? '#60a5fa' : '#f472b6'
+              }
+              return '#9ca3af'
+            }}
+            maskColor="rgba(255, 251, 245, 0.8)"
+            className="!bg-white !border-neutral-200"
+          />
+        )}
       </ReactFlow>
 
-      {/* Quick Stats Panel - Compact on mobile */}
-      <div className="absolute top-4 right-4 z-10 rounded-lg bg-white/95 px-2 py-1.5 text-[10px] sm:px-3 sm:py-2 sm:text-xs shadow-sm backdrop-blur-sm border border-neutral-200">
-        <div className="hidden sm:flex items-center gap-1 text-neutral-500 font-medium border-b border-neutral-100 pb-1 mb-1">
+      {/* Quick Stats Panel - Hidden on mobile for cleaner UI */}
+      <div className="absolute top-4 right-4 z-10 hidden sm:block rounded-lg bg-white/95 px-3 py-2 text-xs shadow-sm backdrop-blur-sm border border-neutral-200">
+        <div className="flex items-center gap-1 text-neutral-500 font-medium border-b border-neutral-100 pb-1 mb-1">
           <Info className="h-3 w-3" />
           <span>Stats</span>
         </div>
-        <div className="flex gap-2 sm:grid sm:grid-cols-2 sm:gap-x-4 sm:gap-y-0.5">
-          <span className="font-medium text-neutral-700">{stats.totalDogs}<span className="text-neutral-400 ml-0.5 hidden sm:inline">dogs</span></span>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
+          <span className="font-medium text-neutral-700">{stats.totalDogs}<span className="text-neutral-400 ml-0.5">dogs</span></span>
           <span className="font-medium text-blue-600">{stats.males}<span className="text-blue-400">♂</span></span>
           <span className="font-medium text-pink-600">{stats.females}<span className="text-pink-400">♀</span></span>
-          <span className="hidden sm:inline text-neutral-500">Breeding:</span>
-          <span className="hidden sm:inline font-medium text-green-600">{stats.breedingDogs}</span>
-          <span className="hidden sm:inline text-neutral-500">Litters:</span>
-          <span className="hidden sm:inline font-medium text-amber-600">{stats.totalLitters}</span>
+          <span className="text-neutral-500">Breeding:</span>
+          <span className="font-medium text-green-600">{stats.breedingDogs}</span>
+          <span className="text-neutral-500">Litters:</span>
+          <span className="font-medium text-amber-600">{stats.totalLitters}</span>
         </div>
       </div>
 
@@ -996,7 +1044,7 @@ function PedigreeCanvasInner({
                 </div>
               </div>
               <div className="text-neutral-400 mt-1 text-[9px]">
-                Tap for info • Pinch to zoom
+                Tap for info • Tap badge to collapse
               </div>
             </div>
 

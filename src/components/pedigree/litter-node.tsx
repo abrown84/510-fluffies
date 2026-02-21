@@ -10,13 +10,15 @@ const LitterNode = memo(function LitterNode({
   data,
   selected,
 }: NodeProps<Node<LitterNodeData>>) {
-  const { litter, isHighlighted } = data
+  const { litter, isHighlighted, compact } = data
   const puppyCount = litter.puppies?.length || litter.puppy_count || 0
+  const isCompact = compact === true
 
   return (
     <div
       className={cn(
-        'relative w-52 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 shadow-md transition-all duration-200',
+        'relative rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 shadow-md transition-all duration-200',
+        isCompact ? 'w-[140px]' : 'w-52',
         'border-2 border-amber-300',
         selected && 'ring-2 ring-amber-400 ring-offset-2',
         isHighlighted && 'ring-4 ring-amber-400 ring-offset-2 scale-105'
@@ -31,7 +33,8 @@ const LitterNode = memo(function LitterNode({
         isConnectableStart={true}
         isConnectableEnd={true}
         className={cn(
-          "!w-4 !h-4 !bg-blue-400 !border-2 !border-white !left-1/3",
+          "!bg-blue-400 !border-2 !border-white !left-1/3",
+          isCompact ? "!w-3 !h-3" : "!w-4 !h-4",
           "transition-all duration-200 hover:scale-150 hover:!bg-blue-500 hover:shadow-lg",
           "before:absolute before:inset-[-8px] before:content-[''] before:rounded-full"
         )}
@@ -45,7 +48,8 @@ const LitterNode = memo(function LitterNode({
         isConnectableStart={true}
         isConnectableEnd={true}
         className={cn(
-          "!w-4 !h-4 !bg-pink-400 !border-2 !border-white !left-2/3",
+          "!bg-pink-400 !border-2 !border-white !left-2/3",
+          isCompact ? "!w-3 !h-3" : "!w-4 !h-4",
           "transition-all duration-200 hover:scale-150 hover:!bg-pink-500 hover:shadow-lg",
           "before:absolute before:inset-[-8px] before:content-[''] before:rounded-full"
         )}
@@ -53,10 +57,16 @@ const LitterNode = memo(function LitterNode({
       />
 
       {/* Header */}
-      <div className="rounded-t-lg bg-amber-400/20 px-3 py-2 border-b border-amber-200">
+      <div className={cn(
+        "rounded-t-lg bg-amber-400/20 border-b border-amber-200",
+        isCompact ? "px-2 py-1" : "px-3 py-2"
+      )}>
         <Link
           href={`/litters/${litter.id}`}
-          className="block font-semibold text-amber-800 hover:text-amber-600 transition-colors text-sm truncate"
+          className={cn(
+            "block font-semibold text-amber-800 hover:text-amber-600 transition-colors truncate",
+            isCompact ? "text-[10px]" : "text-sm"
+          )}
           title={litter.name}
         >
           {litter.name}
@@ -64,29 +74,37 @@ const LitterNode = memo(function LitterNode({
       </div>
 
       {/* Content */}
-      <div className="p-3 space-y-2">
-        {/* Parents */}
-        <div className="flex items-center justify-between text-xs">
-          <div className="flex items-center gap-1">
-            <span className="text-blue-500 font-bold">♂</span>
-            <span className="text-neutral-600 truncate max-w-[70px]">
-              {litter.sire?.name || litter.custom_sire_name || 'Unknown'}
-            </span>
+      <div className={cn(isCompact ? "p-1.5 space-y-1" : "p-3 space-y-2")}>
+        {/* Parents - hidden in compact mode */}
+        {!isCompact && (
+          <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center gap-1">
+              <span className="text-blue-500 font-bold">♂</span>
+              <span className="text-neutral-600 truncate max-w-[70px]">
+                {litter.sire?.name || litter.custom_sire_name || 'Unknown'}
+              </span>
+            </div>
+            <span className="text-neutral-400">×</span>
+            <div className="flex items-center gap-1">
+              <span className="text-pink-500 font-bold">♀</span>
+              <span className="text-neutral-600 truncate max-w-[70px]">
+                {litter.dam?.name || litter.custom_dam_name || 'Unknown'}
+              </span>
+            </div>
           </div>
-          <span className="text-neutral-400">×</span>
-          <div className="flex items-center gap-1">
-            <span className="text-pink-500 font-bold">♀</span>
-            <span className="text-neutral-600 truncate max-w-[70px]">
-              {litter.dam?.name || litter.custom_dam_name || 'Unknown'}
-            </span>
-          </div>
-        </div>
+        )}
 
         {/* Puppy count */}
-        <div className="flex items-center justify-center gap-2">
-          <span className="text-2xl">🐕</span>
-          <span className="font-medium text-neutral-700">
-            {puppyCount} {puppyCount === 1 ? 'puppy' : 'puppies'}
+        <div className={cn(
+          "flex items-center justify-center",
+          isCompact ? "gap-1" : "gap-2"
+        )}>
+          <span className={isCompact ? "text-sm" : "text-2xl"}>🐕</span>
+          <span className={cn(
+            "font-medium text-neutral-700",
+            isCompact ? "text-[10px]" : "text-base"
+          )}>
+            {puppyCount} {isCompact ? '' : (puppyCount === 1 ? 'puppy' : 'puppies')}
           </span>
         </div>
 
@@ -94,7 +112,8 @@ const LitterNode = memo(function LitterNode({
         <div className="text-center">
           <span
             className={cn(
-              'inline-block rounded-full px-2 py-0.5 text-[10px] font-medium',
+              'inline-block rounded-full font-medium',
+              isCompact ? 'px-1.5 py-0.5 text-[8px]' : 'px-2 py-0.5 text-[10px]',
               litter.status === 'available'
                 ? 'bg-green-100 text-green-700'
                 : litter.status === 'expected'
@@ -108,8 +127,8 @@ const LitterNode = memo(function LitterNode({
           </span>
         </div>
 
-        {/* Date */}
-        {(litter.date_of_birth || litter.expected_date) && (
+        {/* Date - hidden in compact mode */}
+        {!isCompact && (litter.date_of_birth || litter.expected_date) && (
           <p className="text-center text-[10px] text-neutral-500">
             {litter.date_of_birth
               ? new Date(litter.date_of_birth).toLocaleDateString()
@@ -127,7 +146,8 @@ const LitterNode = memo(function LitterNode({
         isConnectableStart={true}
         isConnectableEnd={true}
         className={cn(
-          "!w-4 !h-4 !bg-amber-400 !border-2 !border-white",
+          "!bg-amber-400 !border-2 !border-white",
+          isCompact ? "!w-3 !h-3" : "!w-4 !h-4",
           "transition-all duration-200 hover:scale-150 hover:!bg-amber-500 hover:shadow-lg",
           "before:absolute before:inset-[-8px] before:content-[''] before:rounded-full"
         )}

@@ -23,6 +23,10 @@ export type DogNodeData = {
   // Collapse state
   isCollapsed?: boolean
   hasOffspring?: boolean
+  // Mobile/compact mode
+  compact?: boolean
+  // Collapse toggle callback (for mobile tap)
+  onToggleCollapse?: (dogId: string) => void
 }
 
 export type LitterNodeData = {
@@ -33,6 +37,8 @@ export type LitterNodeData = {
     puppies: Puppy[]
   }
   isHighlighted?: boolean
+  // Mobile/compact mode
+  compact?: boolean
 }
 
 export type PedigreeNodeData = DogNodeData | LitterNodeData
@@ -89,5 +95,7 @@ export interface PedigreeCanvasProps {
 // Node dimensions for layout calculations
 export const NODE_DIMENSIONS = {
   dog: { width: 160, height: 180 },
+  dogCompact: { width: 100, height: 120 },
   litter: { width: 200, height: 120 },
+  litterCompact: { width: 140, height: 90 },
 } as const

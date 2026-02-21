@@ -27,9 +27,10 @@ const DogNode = memo(function DogNode({
   data,
   selected,
 }: NodeProps<Node<DogNodeData>>) {
-  const { dog, isHighlighted, relationshipType, isDimmed, parentNames, offspringCount, generation, isCollapsed, hasOffspring } = data
+  const { dog, isHighlighted, relationshipType, isDimmed, parentNames, offspringCount, generation, isCollapsed, hasOffspring, compact, onToggleCollapse } = data
   const isMale = dog.gender === 'male'
   const isExternal = dog.ownership_type && dog.ownership_type !== 'owned'
+  const isCompact = compact === true
   const [showTooltip, setShowTooltip] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -73,7 +74,8 @@ const DogNode = memo(function DogNode({
   return (
     <div
       className={cn(
-        'relative w-40 rounded-xl shadow-md transition-all duration-200',
+        'relative rounded-xl shadow-md transition-all duration-200',
+        isCompact ? 'w-[100px]' : 'w-40',
         'border-2',
         isMale ? 'border-blue-300' : 'border-pink-300',
         isExternal ? 'border-dashed bg-neutral-50' : 'bg-white',
@@ -156,7 +158,10 @@ const DogNode = memo(function DogNode({
         position={Position.Top}
         id="sire"
         isConnectable={true}
-        className="!w-4 !h-4 !bg-blue-400 !border-2 !border-white hover:!bg-blue-500 hover:scale-125 transition-all"
+        className={cn(
+          "!bg-blue-400 !border-2 !border-white hover:!bg-blue-500 hover:scale-125 transition-all",
+          isCompact ? "!w-3 !h-3" : "!w-4 !h-4"
+        )}
         style={{ left: '33%' }}
       />
       <Handle
@@ -164,7 +169,10 @@ const DogNode = memo(function DogNode({
         position={Position.Top}
         id="dam"
         isConnectable={true}
-        className="!w-4 !h-4 !bg-pink-400 !border-2 !border-white hover:!bg-pink-500 hover:scale-125 transition-all"
+        className={cn(
+          "!bg-pink-400 !border-2 !border-white hover:!bg-pink-500 hover:scale-125 transition-all",
+          isCompact ? "!w-3 !h-3" : "!w-4 !h-4"
+        )}
         style={{ left: '67%' }}
       />
 
@@ -180,7 +188,8 @@ const DogNode = memo(function DogNode({
         ) : (
           <div
             className={cn(
-              'flex h-full w-full items-center justify-center text-4xl',
+              'flex h-full w-full items-center justify-center',
+              isCompact ? 'text-2xl' : 'text-4xl',
               isMale ? 'bg-blue-50 text-blue-300' : 'bg-pink-50 text-pink-300'
             )}
           >
@@ -191,7 +200,8 @@ const DogNode = memo(function DogNode({
         {/* Gender badge */}
         <div
           className={cn(
-            'absolute bottom-2 right-2 flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white shadow-md',
+            'absolute flex items-center justify-center rounded-full font-bold text-white shadow-md',
+            isCompact ? 'bottom-1 right-1 h-4 w-4 text-[8px]' : 'bottom-2 right-2 h-6 w-6 text-xs',
             isMale ? 'bg-blue-500' : 'bg-pink-500'
           )}
         >
@@ -231,29 +241,34 @@ const DogNode = memo(function DogNode({
       </div>
 
       {/* Info */}
-      <div className="p-2 text-center">
+      <div className={cn("text-center", isCompact ? "p-1" : "p-2")}>
         <Link
           href={`/dogs/${dog.slug}`}
-          className="block font-semibold text-neutral-800 hover:text-amber-600 transition-colors text-sm truncate"
+          className={cn(
+            "block font-semibold text-neutral-800 hover:text-amber-600 transition-colors truncate",
+            isCompact ? "text-[10px]" : "text-sm"
+          )}
           title={dog.name}
         >
           {dog.name}
         </Link>
-        {dog.color && (
+        {!isCompact && dog.color && (
           <p className="mt-0.5 text-xs text-neutral-500 truncate">{dog.color}</p>
         )}
-        <span
-          className={cn(
-            'mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium',
-            dog.status === 'breeding'
-              ? 'bg-green-100 text-green-700'
-              : dog.status === 'retired'
-              ? 'bg-neutral-100 text-neutral-600'
-              : 'bg-amber-100 text-amber-700'
-          )}
-        >
-          {dog.status}
-        </span>
+        {!isCompact && (
+          <span
+            className={cn(
+              'mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium',
+              dog.status === 'breeding'
+                ? 'bg-green-100 text-green-700'
+                : dog.status === 'retired'
+                ? 'bg-neutral-100 text-neutral-600'
+                : 'bg-amber-100 text-amber-700'
+            )}
+          >
+            {dog.status}
+          </span>
+        )}
       </div>
 
       {/* Offspring connection handle */}
@@ -265,7 +280,8 @@ const DogNode = memo(function DogNode({
         isConnectableStart={true}
         isConnectableEnd={true}
         className={cn(
-          "!w-4 !h-4 !border-2 !border-white",
+          "!border-2 !border-white",
+          isCompact ? "!w-3 !h-3" : "!w-4 !h-4",
           isMale ? "!bg-blue-400 hover:!bg-blue-500" : "!bg-pink-400 hover:!bg-pink-500",
           "transition-all duration-200 hover:scale-150 hover:shadow-lg",
           "before:absolute before:inset-[-8px] before:content-[''] before:rounded-full"
@@ -274,19 +290,27 @@ const DogNode = memo(function DogNode({
 
       {/* Collapse indicator - positioned on right side, away from handle */}
       {hasOffspring && (
-        <div
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            if (onToggleCollapse) {
+              onToggleCollapse(dog.id)
+            }
+          }}
           className={cn(
-            'absolute -right-2 bottom-8 flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold shadow-sm border-2 border-white',
+            'absolute -right-2 bottom-8 flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold shadow-sm border-2 border-white cursor-pointer',
+            'hover:scale-110 active:scale-95 transition-transform',
             isCollapsed
-              ? 'bg-neutral-400 text-white'
-              : 'bg-green-500 text-white'
+              ? 'bg-neutral-400 text-white hover:bg-neutral-500'
+              : 'bg-green-500 text-white hover:bg-green-600'
           )}
-          title={isCollapsed ? 'Double-click to show offspring' : `${offspringCount} offspring (double-click to hide)`}
+          title={isCollapsed ? 'Tap to show offspring' : `${offspringCount} offspring (tap to hide)`}
         >
           {isCollapsed ? (
             <CaretDown className="h-3 w-3" />
           ) : offspringCount}
-        </div>
+        </button>
       )}
     </div>
   )
