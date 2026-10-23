@@ -1,177 +1,136 @@
-# Supabase CLI
+# C.D. Certified Frenchies
 
-[![Coverage Status](https://coveralls.io/repos/github/supabase/cli/badge.svg?branch=main)](https://coveralls.io/github/supabase/cli?branch=main) [![Bitbucket Pipelines](https://img.shields.io/bitbucket/pipelines/supabase-cli/setup-cli/master?style=flat-square&label=Bitbucket%20Canary)](https://bitbucket.org/supabase-cli/setup-cli/pipelines) [![Gitlab Pipeline Status](https://img.shields.io/gitlab/pipeline-status/sweatybridge%2Fsetup-cli?label=Gitlab%20Canary)
-](https://gitlab.com/sweatybridge/setup-cli/-/pipelines)
+Bay Area breeder site for **C.D. Certified Frenchies** — premium fluffy French Bulldogs. Visitors can browse dogs and litters, explore the family tree and gallery, and submit puppy applications. Breeders manage content through a protected admin dashboard.
 
-[Supabase](https://supabase.io) is an open source Firebase alternative. We're building the features of Firebase using enterprise-grade open source tools.
+Built with **Next.js**, **Supabase**, and **Tailwind CSS**.
 
-This repository contains all the functionality for Supabase CLI.
+## Features
 
-- [x] Running Supabase locally
-- [x] Managing database migrations
-- [x] Creating and deploying Supabase Functions
-- [x] Generating types directly from your database schema
-- [x] Making authenticated HTTP requests to [Management API](https://supabase.com/docs/reference/api/introduction)
+### Public site
+
+- **Home** — Featured dogs, available litters, and brand story
+- **Our Dogs** — Dog profiles with photos, details, and health info
+- **Litters & puppies** — Litter pages with parent info and individual puppy listings
+- **Family tree** — Interactive pedigree / lineage view
+- **Gallery** — Photos across dogs, litters, and puppies
+- **Pricing** — Ownership and service options from the database
+- **Health standards** — Breeding and health-testing commitments
+- **Testimonials & blog** — Customer stories and posts
+- **Contact** — Message form stored in Supabase
+- **Puppy application** — Full application form with status workflow
+- **Waitlist** — Interest signup when no matching puppy is available
+
+### Admin (`/admin`)
+
+Protected by Supabase Auth (unauthenticated users are redirected to `/login`).
+
+- Dashboard overview (dogs, litters, applications, messages, puppies)
+- CRUD for dogs, litters, puppies (including weight tracking), pricing, testimonials, and blog posts
+- Image galleries and uploads to Supabase Storage
+- Editable family tree / pedigree layout
+- Application review with status updates and email notifications (via Resend)
+- Contact message inbox
+- Site settings (brand info, social links, SEO-related fields)
+
+## Tech stack
+
+| Layer | Choice |
+| --- | --- |
+| Framework | Next.js (App Router) |
+| UI | React, Tailwind CSS |
+| Backend / auth / DB / storage | Supabase (`@supabase/ssr`, `@supabase/supabase-js`) |
+| Forms & validation | React Hook Form, Zod |
+| Email | Resend |
+| Analytics | Vercel Analytics |
+| Deploy | Compatible with Vercel; `netlify.toml` also included for Netlify |
 
 ## Getting started
 
-### Install the CLI
+### Prerequisites
 
-Available via [NPM](https://www.npmjs.com) as dev dependency. To install:
+- Node.js 20+
+- A [Supabase](https://supabase.com) project
+- (Optional) A [Resend](https://resend.com) API key for application status emails
 
-```bash
-npm i supabase --save-dev
-```
-
-When installing with yarn 4, you need to disable experimental fetch with the following nodejs config.
-
-```
-NODE_OPTIONS=--no-experimental-fetch yarn add supabase
-```
-
-> **Note**
-For Bun versions below v1.0.17, you must add `supabase` as a [trusted dependency](https://bun.sh/guides/install/trusted) before running `bun add -D supabase`.
-
-<details>
-  <summary><b>macOS</b></summary>
-
-  Available via [Homebrew](https://brew.sh). To install:
-
-  ```sh
-  brew install supabase/tap/supabase
-  ```
-
-  To install the beta release channel:
-  
-  ```sh
-  brew install supabase/tap/supabase-beta
-  brew link --overwrite supabase-beta
-  ```
-  
-  To upgrade:
-
-  ```sh
-  brew upgrade supabase
-  ```
-</details>
-
-<details>
-  <summary><b>Windows</b></summary>
-
-  Available via [Scoop](https://scoop.sh). To install:
-
-  ```powershell
-  scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
-  scoop install supabase
-  ```
-
-  To upgrade:
-
-  ```powershell
-  scoop update supabase
-  ```
-</details>
-
-<details>
-  <summary><b>Linux</b></summary>
-
-  Available via [Homebrew](https://brew.sh) and Linux packages.
-
-  #### via Homebrew
-
-  To install:
-
-  ```sh
-  brew install supabase/tap/supabase
-  ```
-
-  To upgrade:
-
-  ```sh
-  brew upgrade supabase
-  ```
-
-  #### via Linux packages
-
-  Linux packages are provided in [Releases](https://github.com/supabase/cli/releases). To install, download the `.apk`/`.deb`/`.rpm`/`.pkg.tar.zst` file depending on your package manager and run the respective commands.
-
-  ```sh
-  sudo apk add --allow-untrusted <...>.apk
-  ```
-
-  ```sh
-  sudo dpkg -i <...>.deb
-  ```
-
-  ```sh
-  sudo rpm -i <...>.rpm
-  ```
-
-  ```sh
-  sudo pacman -U <...>.pkg.tar.zst
-  ```
-</details>
-
-<details>
-  <summary><b>Other Platforms</b></summary>
-
-  You can also install the CLI via [go modules](https://go.dev/ref/mod#go-install) without the help of package managers.
-
-  ```sh
-  go install github.com/supabase/cli@latest
-  ```
-
-  Add a symlink to the binary in `$PATH` for easier access:
-
-  ```sh
-  ln -s "$(go env GOPATH)/bin/cli" /usr/bin/supabase
-  ```
-
-  This works on other non-standard Linux distros.
-</details>
-
-<details>
-  <summary><b>Community Maintained Packages</b></summary>
-
-  Available via [pkgx](https://pkgx.sh/). Package script [here](https://github.com/pkgxdev/pantry/blob/main/projects/supabase.com/cli/package.yml).
-  To install in your working directory:
-
-  ```bash
-  pkgx install supabase
-  ```
-
-  Available via [Nixpkgs](https://nixos.org/). Package script [here](https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/tools/supabase-cli/default.nix).
-</details>
-
-### Run the CLI
+### 1. Install dependencies
 
 ```bash
-supabase bootstrap
+npm install
 ```
 
-Or using npx:
+### 2. Configure environment variables
+
+Create a `.env.local` file in the project root:
 
 ```bash
-npx supabase bootstrap
+# Required — Supabase
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+
+# Recommended — absolute site URL (sitemap, robots, Open Graph)
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# Optional — email notifications for application status changes
+RESEND_API_KEY=re_xxxxxxxx
+RESEND_FROM_EMAIL=onboarding@resend.dev
+BREEDER_EMAIL=hello@cdcertifiedfrenchies.com
 ```
 
-The bootstrap command will guide you through the process of setting up a Supabase project using one of the [starter](https://github.com/supabase-community/supabase-samples/blob/main/samples.json) templates.
+| Variable | Required | Used for |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | Yes | Supabase client (browser, server, middleware) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Supabase client (browser, server, middleware) |
+| `NEXT_PUBLIC_SITE_URL` | No* | `metadataBase`, sitemap, and robots (`http://localhost:3000` by default) |
+| `RESEND_API_KEY` | No | Sending application status emails (skipped with a warning if unset) |
+| `RESEND_FROM_EMAIL` | No | From address (defaults to `onboarding@resend.dev`) |
+| `BREEDER_EMAIL` | No | Breeder notification address (defaults to the public site email) |
 
-## Docs
+\*Set this to your production URL when deploying.
 
-Command & config reference can be found [here](https://supabase.com/docs/reference/cli/about).
+### 3. Set up the database
 
-## Breaking changes
+1. In the Supabase SQL Editor, run [`supabase/schema.sql`](supabase/schema.sql) for the base schema, RLS policies, and seed data.
+2. Apply any additional migrations under [`supabase/migrations/`](supabase/migrations/) in chronological order (pricing, settings, puppies, gallery, testimonials, blog, lineage, pedigree layouts, ownership fields, etc.).
+3. Create public Storage buckets used by the admin uploads: `dogs`, `litters`, and `puppies` (see comments in `schema.sql` for related bucket setup notes).
 
-We follow semantic versioning for changes that directly impact CLI commands, flags, and configurations.
+### 4. Create an admin user
 
-However, due to dependencies on other service images, we cannot guarantee that schema migrations, seed.sql, and generated types will always work for the same CLI major version. If you need such guarantees, we encourage you to pin a specific version of CLI in package.json.
+In the Supabase dashboard, create an Auth user. That account can sign in at `/login` and access `/admin`.
 
-## Developing
+### 5. Run the app
 
-To run from source:
-
-```sh
-# Go >= 1.22
-go run . help
+```bash
+npm run dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+### Scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the development server |
+| `npm run build` | Production build |
+| `npm start` | Serve the production build |
+| `npm run lint` | Run ESLint |
+
+## Project structure
+
+```
+src/
+  app/           # App Router pages (public + /admin + API routes)
+  components/    # UI, layout, dogs, litters, pedigree, etc.
+  lib/           # Supabase clients, email helpers, utilities
+  types/         # Shared TypeScript types
+supabase/
+  schema.sql     # Base schema + RLS
+  migrations/    # Incremental SQL migrations
+```
+
+## License
+
+Private project (`"private": true` in `package.json`).
+
+---
+
+Built by [Brown Industries](https://brwnindustries.com)
